@@ -1,0 +1,101 @@
+# Keywords and entities definition for Vivid Healthcare Job Watcher
+
+entities:
+  organisation:
+    primary:
+      - "Vivid Healthcare Limited"
+      - "Vivid Healthcare Search Limited"
+      - "Vivid Healthcare Ltd"
+      - "Vivid Healthcare Search Ltd"
+    generic:
+      - "Vivid Healthcare"
+      - "Vivid Search"
+
+  role:
+    exact_title_matches:
+      - "Registered Manager"
+      - "Registered Care Manager"
+      - "Registered Home Manager"
+      - "Registered Branch Manager"
+      - "Registered Domiciliary Care Manager"
+      - "Registered Service Manager"
+    variations:
+      - "Registered Care Home Manager"
+      - "Registered Operations Manager"
+      - "Care Home Manager"
+      - "Branch Manager (Care)"
+      - "Service Manager"
+
+  geography:
+    primary:
+      - "Northern Ireland"
+      - "Belfast"
+    counties_and_towns:
+      - "County Antrim"
+      - "County Down"
+      - "County Armagh"
+      - "County Londonderry"
+      - "County Derry"
+      - "County Tyrone"
+      - "County Fermanagh"
+      - "Antrim"
+      - "Bangor"
+      - "Lisburn"
+      - "Newry"
+      - "Derry"
+      - "Londonderry"
+      - "Craigavon"
+      - "Ballymena"
+      - "Newtownabbey"
+      - "Coleraine"
+    postcodes:
+      - "BT"
+
+  regulator:
+    exact:
+      - "RQIA"
+      - "Regulation and Quality Improvement Authority"
+      - "Regulation & Quality Improvement Authority"
+
+scoring:
+  thresholds:
+    strong: 85
+    medium: 60
+    weak: 30
+
+  weights:
+    # Role match weights
+    role_in_title_exact: 45
+    role_in_title_variation: 30
+    role_in_desc_exact: 25
+    role_in_desc_variation: 15
+
+    # Organisation match weights
+    org_primary: 40
+    org_generic: 25
+
+    # Geography match weights
+    geo_primary: 25
+    geo_secondary: 15
+
+    # Regulator match weights
+    regulator_match: 25
+
+  # Negative keywords to strictly disqualify non-relevant listings
+  negative_keywords:
+    - "Veterinary"
+    - "Store Manager"
+    - "Retail Manager"
+    - "Chef"
+    - "Cook"
+    - "Cook Manager"
+    - "Kitchen"
+    - "Catering"
+    - "Housekeeping"
+    - "Cleaner"
+    - "Sales Manager"
+    - "Marketing Manager"
+    - "IT Manager"
+    - "Project Manager"
+    - "Finance Manager"
+    - "Accountant"
