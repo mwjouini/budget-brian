@@ -1,1 +1,80 @@
-[]
+[
+  {
+    "id": 1,
+    "external_id": null,
+    "source": "search_engine",
+    "source_url": "https://duckduckgo.com/l?rut=c313347a704bf0b0cccdedc2f61ca989e6b2f251546817a6603f0f73c7d04387&uddg=https%3A%2F%2Fwww.career.com%2Fuk-job%2Fvivid-healthcare-search%2Fdual-registered-manager-ebd-home-liverpool%2Fj202502152010537150435",
+    "title": "Dual Registered Manager - EBD Home - Liverpool",
+    "company": "Vivid Healthcare Search Limited",
+    "location": "Belfast, Northern Ireland",
+    "salary": "Competitive",
+    "salary_min": null,
+    "salary_max": null,
+    "salary_period": null,
+    "job_type": "Full-time",
+    "description": "Job Posting for DualRegistered Manager- EBD Home - Liverpool atVivid HealthcareSearch Limited DualRegistered Manager- Specialist Mental Health Service Location: Liverpool, Children's Residential Home We are seeking a dedicated Head of Service who will also take on the role ofRegistered Managerfor a new 8-bed children's residential home.",
+    "published_at": "2026-10-28T08:16:05.201269",
+    "first_seen_at": "2026-10-28T08:16:05.208543+00:00",
+    "last_seen_at": "2026-10-28T08:16:05.208543+00:00",
+    "status": "new",
+    "relevance_score": 100.0,
+    "match_category": "strong",
+    "match_reasons": [
+      {
+        "rule": "ROLE_TITLE_EXACT",
+        "description": "Target role 'Registered Manager' matched in job title",
+        "points": 45.0
+      },
+      {
+        "rule": "ORG_PRIMARY",
+        "description": "Primary organisation matched: 'Vivid Healthcare Search Limited'",
+        "points": 40.0
+      },
+      {
+        "rule": "GEO_PRIMARY",
+        "description": "Target location matched: 'Northern Ireland'",
+        "points": 25.0
+      }
+    ],
+    "content_hash": "3eeeabb7111f06f32d8403ee3116f78c1695ad4b7dfce17454a7f904c734aba5"
+  },
+  {
+    "id": 2,
+    "external_id": null,
+    "source": "search_engine",
+    "source_url": "https://duckduckgo.com/l?rut=06363ac134f8c89608bf691758f215ed317b796a63a40b1b2e88b2542e2974fd&uddg=https%3A%2F%2Ftalents.studysmarter.co.uk%2Fcompanies%2Fvivid-healthcare-search-limited%2Fdual-registered-manager-ebd-home-liverpool-799543%2F",
+    "title": "Dual Registered Manager - EBD Home - Liverpool - StudySmarter",
+    "company": "Vivid Healthcare Search Limited",
+    "location": "Belfast, Northern Ireland",
+    "salary": "Competitive",
+    "salary_min": null,
+    "salary_max": null,
+    "salary_period": null,
+    "job_type": "Full-time",
+    "description": "DualRegistered Manager- EBD Home - Liverpool employer:Vivid HealthcareSearch Limited As a DualRegistered Managerat our new children's residential home in Liverpool, you will join a compassionate and dedicated team committed to making a real difference in the lives of young people with complex mental health needs.",
+    "published_at": "2026-10-28T08:16:05.201500",
+    "first_seen_at": "2026-10-28T08:16:05.213346+00:00",
+    "last_seen_at": "2026-10-28T08:16:05.213346+00:00",
+    "status": "new",
+    "relevance_score": 100.0,
+    "match_category": "strong",
+    "match_reasons": [
+      {
+        "rule": "ROLE_TITLE_EXACT",
+        "description": "Target role 'Registered Manager' matched in job title",
+        "points": 45.0
+      },
+      {
+        "rule": "ORG_PRIMARY",
+        "description": "Primary organisation matched: 'Vivid Healthcare Search Limited'",
+        "points": 40.0
+      },
+      {
+        "rule": "GEO_PRIMARY",
+        "description": "Target location matched: 'Northern Ireland'",
+        "points": 25.0
+      }
+    ],
+    "content_hash": "8954efdababadd92a05ff0b068ffc95b778ecf1832d7e39515def8fbf807dda2"
+  }
+]
