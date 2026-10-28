@@ -1,5 +1,78 @@
 [
   {
+    "id": 2,
+    "started_at": "2026-10-28T08:10:47.609571+00:00",
+    "finished_at": "2026-10-28T08:13:35.117294+00:00",
+    "duration_seconds": 167.51,
+    "status": "success",
+    "sources_scanned": {
+      "vivid_website": {
+        "status": "active",
+        "jobs_count": 0,
+        "duration_seconds": 2.5,
+        "error": null
+      },
+      "linkedin": {
+        "status": "active",
+        "jobs_count": 0,
+        "duration_seconds": 0.28,
+        "error": null
+      },
+      "indeed": {
+        "status": "degraded",
+        "jobs_count": 0,
+        "duration_seconds": 0.06,
+        "error": "HTTP 403 Challenge"
+      },
+      "nijobs": {
+        "status": "error",
+        "jobs_count": 0,
+        "duration_seconds": 81.2,
+        "error": ""
+      },
+      "reed": {
+        "status": "active",
+        "jobs_count": 0,
+        "duration_seconds": 0.84,
+        "error": null
+      },
+      "totaljobs": {
+        "status": "error",
+        "jobs_count": 0,
+        "duration_seconds": 81.22,
+        "error": ""
+      },
+      "cv_library": {
+        "status": "degraded",
+        "jobs_count": 0,
+        "duration_seconds": 0.24,
+        "error": "HTTP 403 Challenge"
+      },
+      "glassdoor": {
+        "status": "degraded",
+        "jobs_count": 0,
+        "duration_seconds": 0.03,
+        "error": "HTTP 403 Challenge"
+      },
+      "nhs_jobs": {
+        "status": "active",
+        "jobs_count": 0,
+        "duration_seconds": 0.42,
+        "error": null
+      },
+      "search_engine": {
+        "status": "active",
+        "jobs_count": 0,
+        "duration_seconds": 0.7,
+        "error": null
+      }
+    },
+    "listings_found": 0,
+    "new_listings": 0,
+    "updated_listings": 0,
+    "errors": []
+  },
+  {
     "id": 1,
     "started_at": "2026-10-27T16:27:39.786994+00:00",
     "finished_at": "2026-10-27T16:27:43.007608+00:00",
