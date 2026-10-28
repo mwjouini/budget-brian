@@ -11,6 +11,8 @@ import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+import httpx
+
 from app.matching import matching_engine
 from app.scrapers.base import BaseScraper, ScrapedJob
 from app.scrapers.cv_library import CVLibraryScraper
@@ -20,7 +22,6 @@ from app.scrapers.linkedin import LinkedInScraper
 from app.scrapers.nhs_jobs import NHSJobsScraper
 from app.scrapers.nijobs import NIJobsScraper
 from app.scrapers.reed import ReedScraper
-from app.scrapers.search_engine import SearchEngineScraper
 from app.scrapers.totaljobs import TotaljobsScraper
 from app.scrapers.vivid_website import VividWebsiteScraper
 from app.utils.dedupe import compute_content_hash, detect_material_changes, normalize_url
@@ -39,6 +40,7 @@ JOBS_FILE = DATA_DIR / "jobs.json"
 RUNS_FILE = DATA_DIR / "runs.json"
 STATS_FILE = DATA_DIR / "stats.json"
 
+# Genuine recruitment platforms and official career portals only
 ALL_SCRAPERS: List[type[BaseScraper]] = [
     VividWebsiteScraper,
     ReedScraper,
@@ -49,8 +51,71 @@ ALL_SCRAPERS: List[type[BaseScraper]] = [
     CVLibraryScraper,
     GlassdoorScraper,
     NHSJobsScraper,
-    SearchEngineScraper,
 ]
+
+
+def is_northern_ireland(location: str, title: str, description: str) -> bool:
+    """Strictly verify that the role is genuinely located in Northern Ireland / Belfast."""
+    text_corpus = f"{location} {title} {description}".lower()
+    ni_terms = [
+        "northern ireland",
+        "belfast",
+        "antrim",
+        "down",
+        "derry",
+        "londonderry",
+        "armagh",
+        "fermanagh",
+        "tyrone",
+        "lisburn",
+        "newry",
+        "craigavon",
+        "newtownabbey",
+        "bangor",
+    ]
+    # English/Scottish/Welsh cities that often get confused in generic national aggregators
+    excluded_cities = [
+        "liverpool",
+        "manchester",
+        "birmingham",
+        "leeds",
+        "sheffield",
+        "bristol",
+        "london",
+        "glasgow",
+        "edinburgh",
+        "cardiff",
+        "newcastle",
+        "nottingham",
+        "southampton",
+        "portsmouth",
+    ]
+    has_excluded = any(c in f"{title} {location}".lower() for c in excluded_cities)
+    has_ni = any(t in text_corpus for t in ni_terms)
+    if has_excluded and not has_ni:
+        return False
+    return has_ni
+
+
+async def verify_job_url(url: str) -> bool:
+    """Validate that the candidate job URL is direct, well-formed, and not a 404 dead link."""
+    if not url or not url.startswith(("http://", "https://")):
+        return False
+    # Reject search engine redirect URLs
+    if "duckduckgo.com" in url or "google.com/url" in url:
+        return False
+    try:
+        async with httpx.AsyncClient(timeout=8.0, follow_redirects=True) as client:
+            res = await client.head(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
+            if res.status_code in (405, 403):
+                res = await client.get(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
+            if res.status_code in (404, 410):
+                logger.warning(f"Rejecting dead job URL (HTTP {res.status_code}): {url}")
+                return False
+            return res.status_code < 400
+    except Exception as exc:
+        logger.debug(f"URL check exception for {url}: {exc}")
+        return True  # Don't aggressively drop if target site just timed out
 
 
 def load_json(path: Path, default: Any) -> Any:
@@ -74,7 +139,15 @@ async def run_scan() -> Dict[str, Any]:
     started_iso = started_at.isoformat()
     logger.info(f"=== Starting Vivid Healthcare Job Scan at {started_iso} ===")
 
-    existing_jobs: List[Dict[str, Any]] = load_json(JOBS_FILE, [])
+    raw_jobs: List[Dict[str, Any]] = load_json(JOBS_FILE, [])
+    # Strictly purge any invalid, non-NI, or search redirect legacy jobs
+    existing_jobs: List[Dict[str, Any]] = [
+        j for j in raw_jobs
+        if is_northern_ireland(j.get("location", ""), j.get("title", ""), j.get("description", ""))
+        and "duckduckgo.com" not in j.get("source_url", "")
+        and "career.com" not in j.get("source_url", "")
+        and "studysmarter" not in j.get("source_url", "")
+    ]
     existing_runs: List[Dict[str, Any]] = load_json(RUNS_FILE, [])
 
     jobs_by_url: Dict[str, Dict[str, Any]] = {j["source_url"]: j for j in existing_jobs if j.get("source_url")}
@@ -115,7 +188,19 @@ async def run_scan() -> Dict[str, Any]:
         # Evaluate jobs
         for sj in jobs:
             total_found += 1
+
+            # 1. Strict Northern Ireland location requirement
+            if not is_northern_ireland(sj.location or "", sj.title, sj.description or ""):
+                logger.info(f"[{s_name}] Skipped non-Northern Ireland listing: '{sj.title}' ({sj.location})")
+                continue
+
             canonical_url = normalize_url(sj.source_url)
+
+            # 2. Strict Live URL verification (avoid dead/404 links)
+            if not await verify_job_url(sj.source_url):
+                logger.warning(f"[{s_name}] Skipped unverified or dead URL: {sj.source_url}")
+                continue
+
             c_hash = compute_content_hash(
                 title=sj.title,
                 company=sj.company,
@@ -130,8 +215,8 @@ async def run_scan() -> Dict[str, Any]:
                 description=sj.description,
             )
 
-            # Drop third-party noise
-            if match_res.score < 30.0 or match_res.category == "not_relevant":
+            # Drop third-party noise and non-relevant items
+            if match_res.score < 50.0 or match_res.category == "not_relevant":
                 continue
 
             parsed_sal = parse_salary(sj.salary)
