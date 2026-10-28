@@ -10,6 +10,7 @@ import json
 import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+from urllib.parse import urlparse
 
 import httpx
 
@@ -97,12 +98,38 @@ def is_northern_ireland(location: str, title: str, description: str) -> bool:
     return has_ni
 
 
+DISALLOWED_HOSTS = {
+    "duckduckgo.com",
+    "career.com",
+    "studysmarter.co.uk",
+    "studysmarter.de",
+}
+
+
+def is_disallowed_domain(url: str) -> bool:
+    """Check if the given URL belongs to a disallowed or redirect domain using parsed hostnames."""
+    if not url:
+        return True
+    try:
+        parsed = urlparse(url)
+        host = (parsed.hostname or "").lower()
+        if not host:
+            return True
+        for disallowed in DISALLOWED_HOSTS:
+            if host == disallowed or host.endswith(f".{disallowed}"):
+                return True
+        if (host == "google.com" or host.endswith(".google.com")) and (parsed.path or "").lower().startswith("/url"):
+            return True
+        return False
+    except Exception:
+        return True
+
+
 async def verify_job_url(url: str) -> bool:
     """Validate that the candidate job URL is direct, well-formed, and not a 404 dead link."""
     if not url or not url.startswith(("http://", "https://")):
         return False
-    # Reject search engine redirect URLs
-    if "duckduckgo.com" in url or "google.com/url" in url:
+    if is_disallowed_domain(url):
         return False
     try:
         async with httpx.AsyncClient(timeout=8.0, follow_redirects=True) as client:
@@ -144,9 +171,7 @@ async def run_scan() -> Dict[str, Any]:
     existing_jobs: List[Dict[str, Any]] = [
         j for j in raw_jobs
         if is_northern_ireland(j.get("location", ""), j.get("title", ""), j.get("description", ""))
-        and "duckduckgo.com" not in j.get("source_url", "")
-        and "career.com" not in j.get("source_url", "")
-        and "studysmarter" not in j.get("source_url", "")
+        and not is_disallowed_domain(j.get("source_url", ""))
     ]
     existing_runs: List[Dict[str, Any]] = load_json(RUNS_FILE, [])
 
