@@ -34,9 +34,9 @@ class BaseScraper(ABC):
     name: str = "base"
     enabled: bool = True
     priority: int = 10
-    timeout: float = 25.0
-    max_retries: int = 3
-    retry_delay: float = 2.0
+    timeout: float = 12.0
+    max_retries: int = 2
+    retry_delay: float = 1.0
 
     def __init__(self):
         self.status: str = "active"  # active, degraded, error
