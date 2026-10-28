@@ -1,10 +1,10 @@
 {
-  "last_scan_utc": "2026-10-28T08:23:28.593328+00:00",
+  "last_scan_utc": "2026-10-28T08:25:19.993891+00:00",
   "total_active_jobs": 0,
   "strong_matches": 0,
   "medium_matches": 0,
   "sources_monitored": 9,
   "last_run_status": "success",
-  "last_run_duration": 3.58,
+  "last_run_duration": 56.01,
   "scan_frequency": "Every 1 Hour (Automated via GitHub Actions)"
 }
