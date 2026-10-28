@@ -3,37 +3,55 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vivid Healthcare Watcher • Executive Job Intelligence Portal</title>
-  <meta name="description" content="24/7 automated intelligence portal monitoring Registered Manager vacancies for Vivid Healthcare in Northern Ireland / Belfast.">
+  <title>Budget Brian • Vivid Healthcare Intelligence HQ</title>
+  <meta name="description" content="Mission Control & 24/7 Autonomous Job Surveillance for Vivid Healthcare Registered Manager roles in Northern Ireland.">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --bg-base: #070b13;
-      --bg-surface: #0e1626;
-      --bg-surface-elevated: #162238;
-      --bg-card: rgba(18, 28, 48, 0.7);
+      /* Bespoke Command Center Palette (Warm Amber, Obsidian & Radar Crimson - NOT generic AI blue/green) */
+      --bg-base: #06090f;
+      --bg-surface: #0d121c;
+      --bg-surface-elevated: #141c2a;
+      --bg-card: rgba(16, 23, 36, 0.75);
+      --bg-card-hover: rgba(22, 32, 50, 0.88);
+      
       --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-hover: rgba(255, 255, 255, 0.16);
-      --border-focus: rgba(16, 185, 129, 0.4);
-      --text-main: #f1f5f9;
+      --border-medium: rgba(255, 255, 255, 0.14);
+      --border-gold: rgba(245, 158, 11, 0.35);
+      --border-radar: rgba(239, 68, 68, 0.4);
+      
+      --text-main: #f8fafc;
       --text-secondary: #94a3b8;
       --text-muted: #64748b;
-      --accent-emerald: #10b981;
-      --accent-emerald-light: #34d399;
-      --accent-emerald-glow: rgba(16, 185, 129, 0.18);
-      --accent-cyan: #06b6d4;
-      --accent-amber: #f59e0b;
-      --accent-rose: #f43f5e;
+      
+      /* Vibrant Accents from Video */
+      --accent-gold: #f59e0b;
+      --accent-gold-light: #fbbf24;
+      --accent-gold-glow: rgba(245, 158, 11, 0.22);
+      
+      --accent-radar: #ef4444;
+      --accent-radar-glow: rgba(239, 68, 68, 0.28);
+      
+      --accent-cyan: #38bdf8;
+      --accent-cyan-glow: rgba(56, 189, 248, 0.18);
+      
+      --accent-success: #10b981;
+      
       --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
       --radius-full: 9999px;
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
-      --shadow-soft: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
-      --shadow-glow: 0 0 25px rgba(16, 185, 129, 0.2);
+      
+      --shadow-soft: 0 12px 36px -12px rgba(0, 0, 0, 0.7);
+      --shadow-gold: 0 0 30px rgba(245, 158, 11, 0.18);
+      --shadow-radar: 0 0 30px rgba(239, 68, 68, 0.2);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -41,8 +59,9 @@
     body {
       background-color: var(--bg-base);
       background-image: 
-        radial-gradient(circle at 15% 10%, rgba(16, 185, 129, 0.08), transparent 40%),
-        radial-gradient(circle at 85% 80%, rgba(6, 182, 212, 0.06), transparent 45%);
+        radial-gradient(ellipse at 15% 10%, rgba(245, 158, 11, 0.07), transparent 45%),
+        radial-gradient(ellipse at 85% 80%, rgba(239, 68, 68, 0.06), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.03), transparent 60%);
       color: var(--text-main);
       font-family: var(--font-sans);
       min-height: 100vh;
@@ -50,7 +69,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Scrollbar */
+    /* Scrollbars */
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: var(--bg-base); }
     ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
@@ -60,53 +79,85 @@
     #login-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(7, 11, 19, 0.85);
-      backdrop-filter: blur(20px);
+      background: rgba(6, 9, 15, 0.88);
+      backdrop-filter: blur(24px);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 1.5rem;
-      z-index: 1000;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
+      z-index: 2000;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
     }
     #login-overlay.hidden {
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
     }
-    .login-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-hover);
+    .login-container {
+      background: linear-gradient(145deg, #101624, #0b0f19);
+      border: 1px solid var(--border-gold);
       border-radius: var(--radius-lg);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), var(--shadow-glow);
-      max-width: 420px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), var(--shadow-gold);
+      max-width: 440px;
       width: 100%;
-      padding: 2.5rem 2rem;
+      padding: 2.75rem 2.25rem;
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
-    .login-icon {
-      width: 64px;
-      height: 64px;
-      margin: 0 auto 1.5rem;
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.2));
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      border-radius: 20px;
-      display: flex;
+    .login-container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-radar), var(--accent-gold), var(--accent-cyan));
+    }
+    .login-avatar {
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 1.25rem;
+      border-radius: 50%;
+      border: 2px solid var(--accent-gold);
+      box-shadow: 0 0 25px var(--accent-gold-glow);
+      overflow: hidden;
+      background: #000;
+    }
+    .login-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .login-badge {
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      font-size: 1.8rem;
+      gap: 0.4rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-full);
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid var(--border-gold);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--accent-gold-light);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.75rem;
+      font-family: var(--font-mono);
     }
     .login-title {
-      font-size: 1.4rem;
-      font-weight: 700;
+      font-size: 1.5rem;
+      font-weight: 800;
       color: #fff;
-      margin-bottom: 0.4rem;
       letter-spacing: -0.02em;
+      margin-bottom: 0.35rem;
     }
     .login-subtitle {
       color: var(--text-secondary);
-      font-size: 0.875rem;
+      font-size: 0.85rem;
       margin-bottom: 1.75rem;
+      line-height: 1.4;
     }
     .form-group {
       text-align: left;
@@ -114,22 +165,19 @@
     }
     .form-label {
       display: block;
-      font-size: 0.75rem;
-      font-weight: 600;
+      font-size: 0.725rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       color: var(--text-muted);
-      margin-bottom: 0.4rem;
-    }
-    .input-wrapper {
-      position: relative;
+      margin-bottom: 0.45rem;
     }
     .form-input {
       width: 100%;
-      background: #090e18;
-      border: 1px solid var(--border-subtle);
+      background: #080c14;
+      border: 1px solid var(--border-medium);
       border-radius: var(--radius-sm);
-      padding: 0.8rem 1rem;
+      padding: 0.85rem 1.1rem;
       font-size: 0.95rem;
       color: #fff;
       font-family: inherit;
@@ -137,44 +185,44 @@
     }
     .form-input:focus {
       outline: none;
-      border-color: var(--accent-emerald);
-      box-shadow: 0 0 0 3px var(--accent-emerald-glow);
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 0 3px var(--accent-gold-glow);
     }
     .login-btn {
       width: 100%;
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: #fff;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #0b0f19;
       border: none;
       border-radius: var(--radius-sm);
-      padding: 0.85rem 1rem;
+      padding: 0.9rem 1rem;
       font-size: 0.95rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
       transition: all 0.2s ease;
-      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35);
     }
     .login-btn:hover {
-      background: linear-gradient(135deg, #059669, #047857);
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
       transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+      box-shadow: 0 6px 22px rgba(245, 158, 11, 0.45);
     }
     .login-hint {
       margin-top: 1.25rem;
       font-size: 0.75rem;
       color: var(--text-muted);
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.02);
       padding: 0.5rem 0.75rem;
       border-radius: 6px;
       border: 1px dashed var(--border-subtle);
     }
 
-    /* App Container */
+    /* Main App Layout */
     .app-layout {
-      max-width: 1360px;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 1.5rem;
     }
@@ -185,10 +233,10 @@
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 1rem;
-      padding: 1rem 1.5rem;
+      gap: 1.25rem;
+      padding: 1rem 1.75rem;
       background: var(--bg-card);
-      backdrop-filter: blur(16px);
+      backdrop-filter: blur(20px);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-lg);
       margin-bottom: 1.5rem;
@@ -197,27 +245,51 @@
     .nav-brand {
       display: flex;
       align-items: center;
-      gap: 0.85rem;
+      gap: 1rem;
     }
-    .brand-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #10b981, #06b6d4);
+    .brand-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      border: 2px solid var(--accent-gold);
+      box-shadow: 0 0 16px var(--accent-gold-glow);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .brand-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .brand-meta {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-title-wrap {
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      gap: 0.6rem;
     }
     .brand-title {
-      font-size: 1.15rem;
-      font-weight: 700;
+      font-size: 1.2rem;
+      font-weight: 800;
       color: #fff;
       letter-spacing: -0.01em;
     }
+    .brand-status-pill {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border-radius: var(--radius-full);
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--border-radar);
+      color: #fca5a5;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
     .brand-subtitle {
-      font-size: 0.75rem;
+      font-size: 0.775rem;
       color: var(--text-secondary);
       font-family: var(--font-mono);
     }
@@ -232,8 +304,8 @@
     .btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      padding: 0.5rem 0.9rem;
+      gap: 0.45rem;
+      padding: 0.55rem 1rem;
       font-size: 0.825rem;
       font-weight: 600;
       border-radius: var(--radius-sm);
@@ -243,664 +315,989 @@
       border: 1px solid transparent;
       font-family: inherit;
     }
-    .btn-primary {
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    .btn-gold {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #0b0f19;
+      font-weight: 700;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
     }
-    .btn-primary:hover {
-      background: linear-gradient(135deg, #059669, #047857);
+    .btn-gold:hover {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
       transform: translateY(-1px);
     }
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.04);
       border-color: var(--border-subtle);
       color: var(--text-main);
     }
     .btn-secondary:hover {
       background: rgba(255, 255, 255, 0.09);
-      border-color: var(--border-hover);
+      border-color: var(--border-medium);
     }
     .btn-danger {
-      background: rgba(244, 63, 94, 0.1);
-      border-color: rgba(244, 63, 94, 0.25);
-      color: #fb7185;
+      background: rgba(239, 68, 68, 0.1);
+      border-color: rgba(239, 68, 68, 0.25);
+      color: #fca5a5;
     }
     .btn-danger:hover {
-      background: rgba(244, 63, 94, 0.2);
+      background: rgba(239, 68, 68, 0.2);
     }
 
-    /* Live Cloud Status Banner */
-    .status-banner {
-      background: linear-gradient(90deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.08));
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      border-radius: var(--radius-md);
-      padding: 1rem 1.25rem;
+    /* Live Surveillance Feed & Mission Briefing Hero Section */
+    .mission-hero {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+    @media (max-width: 980px) {
+      .mission-hero { grid-template-columns: 1fr; }
+    }
+
+    /* Video Player HUD Container */
+    .video-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+    }
+    .video-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 0.9rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-subtle);
     }
-    .pulse-dot {
+    .video-header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .radar-pulse-dot {
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: var(--accent-emerald);
-      box-shadow: 0 0 10px var(--accent-emerald);
-      animation: pulse 2s infinite;
-      display: inline-block;
+      background: var(--accent-radar);
+      box-shadow: 0 0 12px var(--accent-radar);
+      animation: pulse-red 2s infinite;
     }
-    @keyframes pulse {
-      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    @keyframes pulse-red {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      70% { transform: scale(1.1); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
     }
-    .status-text-block {
+    .video-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+    }
+    .video-node-tag {
+      font-size: 0.7rem;
+      color: var(--accent-gold-light);
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid var(--border-gold);
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+    }
+    .video-frame-wrapper {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: #000;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      aspect-ratio: 16 / 9;
+    }
+    .video-frame-wrapper video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .video-reticle-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle, transparent 45%, rgba(6, 9, 15, 0.4) 95%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1rem;
+    }
+    .reticle-top {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .reticle-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent-cyan);
+    }
+    .video-controls {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-    }
-    .status-headline {
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: #fff;
-    }
-    .status-details {
-      font-size: 0.775rem;
+      justify-content: space-between;
+      margin-top: 0.9rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.75rem;
       color: var(--text-secondary);
       font-family: var(--font-mono);
     }
+    .video-btn-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .video-mini-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .video-mini-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: var(--border-medium);
+    }
 
-    /* KPI Metrics Grid */
+    /* Mission Briefing Card */
+    .briefing-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+    .briefing-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-full);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--accent-cyan);
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.75rem;
+      font-family: var(--font-mono);
+    }
+    .briefing-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.01em;
+    }
+    .briefing-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+    }
+    .recon-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .recon-item {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 0.85rem;
+    }
+    .recon-label {
+      font-size: 0.675rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.2rem;
+      font-family: var(--font-mono);
+    }
+    .recon-value {
+      font-size: 0.85rem;
+      color: #fff;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .recon-tag {
+      font-size: 0.7rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+    .tag-target { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid var(--border-radar); }
+    .tag-gold { background: rgba(245, 158, 11, 0.15); color: var(--accent-gold-light); border: 1px solid var(--border-gold); }
+
+    /* Visual Reconnaissance Gallery Carousel */
+    .gallery-preview {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .gallery-thumb {
+      height: 90px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .gallery-thumb:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-gold);
+    }
+    .gallery-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .gallery-thumb-tag {
+      position: absolute;
+      bottom: 4px;
+      left: 6px;
+      font-size: 0.625rem;
+      font-family: var(--font-mono);
+      background: rgba(0, 0, 0, 0.75);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      color: #fff;
+    }
+
+    /* KPI Grid */
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.5rem;
+      gap: 1.25rem;
+      margin-bottom: 1.75rem;
     }
     .kpi-card {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
       padding: 1.25rem 1.5rem;
-      backdrop-filter: blur(12px);
-      transition: border-color 0.2s ease, transform 0.2s ease;
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      position: relative;
+      overflow: hidden;
     }
     .kpi-card:hover {
-      border-color: var(--border-hover);
       transform: translateY(-2px);
+      border-color: var(--border-medium);
     }
     .kpi-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      color: var(--text-muted);
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
     }
-    .kpi-value {
-      font-size: 1.85rem;
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-    }
-    .kpi-subtext {
+    .kpi-title {
       font-size: 0.775rem;
-      color: var(--text-secondary);
-      margin-top: 0.35rem;
-    }
-
-    /* Target Entity Card */
-    .target-scope-card {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      padding: 1.25rem 1.5rem;
-      margin-bottom: 1.5rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.25rem;
-    }
-    .scope-item-title {
-      font-size: 0.7rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--text-muted);
-      margin-bottom: 0.25rem;
-    }
-    .scope-item-val {
-      font-size: 0.9rem;
-      color: #fff;
-      font-weight: 600;
-    }
-    .scope-item-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-top: 0.35rem;
-    }
-    .scope-tag {
-      font-size: 0.7rem;
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-secondary);
       font-family: var(--font-mono);
     }
+    .kpi-icon {
+      font-size: 1.2rem;
+    }
+    .kpi-value {
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 0.4rem;
+      font-family: var(--font-mono);
+    }
+    .kpi-meta {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .kpi-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .ind-gold { background: var(--accent-gold); box-shadow: 0 0 8px var(--accent-gold); }
+    .ind-radar { background: var(--accent-radar); box-shadow: 0 0 8px var(--accent-radar); }
+    .ind-cyan { background: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan); }
+    .ind-green { background: var(--accent-success); box-shadow: 0 0 8px var(--accent-success); }
 
-    /* Tabs & Filters */
-    .tabs-bar {
+    /* Navigation Tabs */
+    .tab-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.6rem 1.25rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+    .tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .tab-btn.active {
+      color: #0b0f19;
+      background: var(--accent-gold);
+      font-weight: 700;
+      box-shadow: 0 4px 14px var(--accent-gold-glow);
+    }
+    .tab-count {
+      font-size: 0.725rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: var(--radius-full);
+      background: rgba(0, 0, 0, 0.3);
+      font-family: var(--font-mono);
+    }
+    .tab-btn.active .tab-count {
+      background: rgba(0, 0, 0, 0.25);
+      color: #0b0f19;
+    }
+
+    /* Content Panes */
+    .tab-pane {
+      display: none;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+
+    /* Table Styles */
+    .table-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow-x: auto;
+      box-shadow: var(--shadow-soft);
+    }
+    .intel-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+    .intel-table th {
+      padding: 1rem 1.25rem;
+      font-size: 0.725rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-medium);
+      background: rgba(255, 255, 255, 0.02);
+      font-family: var(--font-mono);
+    }
+    .intel-table td {
+      padding: 1.1rem 1.25rem;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      vertical-align: middle;
+    }
+    .intel-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Empty State Card */
+    .empty-state {
+      padding: 3.5rem 2rem;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(16, 23, 36, 0.4), rgba(16, 23, 36, 0.85));
+      border: 1px dashed var(--border-medium);
+      border-radius: var(--radius-lg);
+      margin: 1rem 0;
+    }
+    .empty-icon-wrap {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 1.5rem;
+      border-radius: 20px;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid var(--border-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      box-shadow: var(--shadow-gold);
+    }
+    .empty-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.6rem;
+    }
+    .empty-desc {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      max-width: 580px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.6;
+    }
+    .empty-meta-tags {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+    .empty-tag {
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+    }
+
+    /* Source Badges */
+    .source-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: var(--font-mono);
+    }
+    .badge-reed { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .badge-vivid { background: rgba(245, 158, 11, 0.15); color: var(--accent-gold-light); border: 1px solid var(--border-gold); }
+    .badge-linkedin { background: rgba(56, 189, 248, 0.15); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .badge-nijobs { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-generic { background: rgba(255, 255, 255, 0.06); color: var(--text-secondary); border: 1px solid var(--border-subtle); }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: var(--radius-full);
+      font-size: 0.7rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+    }
+    .status-success { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .status-partial { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .status-error { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+    /* Modal for Passcode & Gallery */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(6, 9, 15, 0.85);
+      backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 3000;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+    .modal-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .modal-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+      position: relative;
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+    .modal-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .modal-close:hover { color: #fff; }
+
+    /* Lightbox Modal */
+    #lightbox-modal .modal-card {
+      max-width: 900px;
+      padding: 1rem;
+      background: #000;
+    }
+    #lightbox-img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-md);
+      display: block;
+    }
+
+    /* Footer */
+    .app-footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 1rem;
-      margin-bottom: 1rem;
-      border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 0.75rem;
-    }
-    .tab-group {
-      display: flex;
-      gap: 0.5rem;
-    }
-    .tab-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-size: 0.875rem;
-      font-weight: 600;
-      padding: 0.5rem 1rem;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .tab-btn.active {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid var(--border-subtle);
-    }
-    .filter-group {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-    .search-input {
-      background: #090e18;
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm);
-      padding: 0.45rem 0.85rem;
-      font-size: 0.825rem;
-      color: #fff;
-      min-width: 220px;
-    }
-    .search-input:focus {
-      outline: none;
-      border-color: var(--accent-emerald);
-    }
-    .select-input {
-      background: #090e18;
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm);
-      padding: 0.45rem 0.85rem;
-      font-size: 0.825rem;
-      color: #fff;
-      cursor: pointer;
-    }
-
-    /* Data Table */
-    .table-container {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      overflow-x: auto;
-      box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(12px);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 0.875rem;
-    }
-    th {
-      padding: 0.9rem 1rem;
-      background: rgba(14, 22, 38, 0.8);
-      color: var(--text-muted);
-      font-size: 0.725rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-    td {
-      padding: 1rem;
-      border-bottom: 1px solid var(--border-subtle);
-      color: var(--text-main);
-      vertical-align: middle;
-    }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: rgba(255, 255, 255, 0.02); }
-
-    /* Score Badge */
-    .score-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.25rem 0.6rem;
-      border-radius: var(--radius-full);
-      font-weight: 700;
       font-size: 0.775rem;
-      font-family: var(--font-mono);
-    }
-    .score-strong {
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      color: var(--accent-emerald-light);
-    }
-    .score-medium {
-      background: rgba(245, 158, 11, 0.15);
-      border: 1px solid rgba(245, 158, 11, 0.35);
-      color: var(--accent-amber);
-    }
-    .score-weak {
-      background: rgba(148, 163, 184, 0.1);
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      color: var(--text-secondary);
-    }
-
-    .source-tag {
-      display: inline-block;
-      font-size: 0.725rem;
-      font-family: var(--font-mono);
-      padding: 0.2rem 0.55rem;
-      border-radius: 4px;
-      background: rgba(6, 182, 212, 0.12);
-      border: 1px solid rgba(6, 182, 212, 0.25);
-      color: #38bdf8;
-    }
-
-    .job-title-link {
-      font-weight: 600;
-      color: #fff;
-      text-decoration: none;
-      display: block;
-      margin-bottom: 0.2rem;
-      transition: color 0.15s ease;
-    }
-    .job-title-link:hover {
-      color: var(--accent-emerald-light);
-      text-decoration: underline;
-    }
-    .job-company-name {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-    }
-
-    /* Empty state */
-    .empty-state {
-      text-align: center;
-      padding: 4rem 1.5rem;
-    }
-    .empty-icon {
-      font-size: 2.8rem;
-      margin-bottom: 1rem;
-      opacity: 0.8;
-    }
-    .empty-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #fff;
-      margin-bottom: 0.5rem;
-    }
-    .empty-desc {
       color: var(--text-muted);
-      font-size: 0.875rem;
-      max-width: 500px;
-      margin: 0 auto 1.5rem;
-      line-height: 1.6;
-    }
-
-    /* Modal */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(8px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-      z-index: 2000;
-    }
-    .modal-backdrop.hidden { display: none; }
-    .modal-box {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-hover);
-      border-radius: var(--radius-lg);
-      max-width: 640px;
-      width: 100%;
-      padding: 2rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .app-layout { padding: 1rem; }
-      .navbar { flex-direction: column; align-items: stretch; }
-      .tabs-bar { flex-direction: column; align-items: stretch; }
-      .filter-group { flex-direction: column; }
-      .search-input { min-width: 100%; }
+      font-family: var(--font-mono);
     }
   </style>
 </head>
 <body>
 
-  <!-- 1. LOGIN GATE OVERLAY -->
+  <!-- Secure Login Overlay Gate -->
   <div id="login-overlay">
-    <div class="login-card">
-      <div class="login-icon">🔐</div>
-      <h2 class="login-title">Executive Access</h2>
-      <p class="login-subtitle">Vivid Healthcare Registered Manager Intelligence Portal</p>
+    <div class="login-container">
+      <div class="login-avatar">
+        <img src="assets/brian_avatar.jpg" alt="Budget Brian Agent">
+      </div>
+      <div class="login-badge">Mission Control Node</div>
+      <h1 class="login-title">Budget Brian</h1>
+      <p class="login-subtitle">Vivid Healthcare Job Watcher • Belfast & Northern Ireland Executive Portal</p>
 
       <form id="login-form" onsubmit="handleLogin(event)">
         <div class="form-group">
-          <label class="form-label" for="login-password">Access Passcode</label>
-          <div class="input-wrapper">
-            <input type="password" id="login-password" class="form-input" placeholder="Enter portal passcode" required autofocus>
-          </div>
-        </div>
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; font-size: 0.775rem; color: var(--text-secondary);">
-          <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
-            <input type="checkbox" id="remember-me" checked> Remember session
-          </label>
-          <span style="color: var(--text-muted);">256-bit protected</span>
+          <label class="form-label" for="login-password">Authorization Passcode</label>
+          <input type="password" id="login-password" class="form-input" placeholder="Enter authorization key..." autocomplete="current-password" autofocus required>
         </div>
         <button type="submit" class="login-btn">
-          <span>Authenticate & Unlock</span> ➔
+          <span>Authorize Access</span>
+          <span>→</span>
         </button>
       </form>
 
       <div class="login-hint">
-        💡 Default access passcode: <strong style="color: #fff; font-family: var(--font-mono);">vivid2026</strong>
+        Default passcode: <code>vivid2026</code> (Configurable inside settings)
       </div>
     </div>
   </div>
 
-  <!-- 2. MAIN APP DASHBOARD -->
-  <div class="app-layout" id="dashboard-app" style="display: none;">
+  <!-- Main Authenticated App -->
+  <div id="dashboard-app" class="app-layout" style="display: none;">
 
-    <!-- Navbar -->
+    <!-- Top Navigation Bar -->
     <header class="navbar">
       <div class="nav-brand">
-        <div class="brand-icon">⚡</div>
-        <div>
-          <h1 class="brand-title">Vivid Healthcare Watcher</h1>
-          <div class="brand-subtitle">Automated Hourly Vacancy Hunter • Northern Ireland</div>
+        <div class="brand-avatar">
+          <img src="assets/brian_avatar.jpg" alt="Budget Brian">
+        </div>
+        <div class="brand-meta">
+          <div class="brand-title-wrap">
+            <h1 class="brand-title">Budget Brian</h1>
+            <span class="brand-status-pill">Target Locked</span>
+          </div>
+          <span class="brand-subtitle">Vivid Healthcare Intelligence • Belfast Regional Node</span>
         </div>
       </div>
+
       <div class="nav-actions">
-        <button class="btn btn-secondary" onclick="exportData('json')">📥 Export JSON</button>
-        <button class="btn btn-secondary" onclick="exportData('csv')">📊 Export CSV</button>
-        <a href="https://github.com/mwjouini/budget-brian/actions/workflows/watcher.yml" target="_blank" rel="noopener noreferrer" class="btn btn-primary" title="Trigger manual scan in GitHub Actions cloud">
-          <span>⚡ Run Cloud Scan</span> ↗
-        </a>
-        <button class="btn btn-secondary" onclick="openPasswordModal()">🔑 Password</button>
-        <button class="btn btn-danger" onclick="handleLogout()">Logout</button>
+        <button class="btn btn-gold" onclick="triggerManualScan()">
+          <span>⚡</span>
+          <span>Refresh Cloud Scan</span>
+        </button>
+        <button class="btn btn-secondary" onclick="openGalleryModal()">
+          <span>🖼️</span>
+          <span>Recon Intel</span>
+        </button>
+        <button class="btn btn-secondary" onclick="openPasswordModal()">
+          <span>🔑</span>
+          <span>Passcode</span>
+        </button>
+        <button class="btn btn-danger" onclick="handleLogout()">
+          <span>Sign Out</span>
+        </button>
       </div>
     </header>
 
-    <!-- Cloud Status Banner -->
-    <div class="status-banner">
-      <div class="status-text-block">
-        <span class="pulse-dot"></span>
-        <div>
-          <div class="status-headline">24/7 Cloud Automated Monitoring Active</div>
-          <div class="status-details">
-            Runs every 1 hour via GitHub Actions • No laptop or local server required
+    <!-- Mission Control Hero & Live Video Feed -->
+    <section class="mission-hero">
+      
+      <!-- Live Video Recon Stream -->
+      <div class="video-card">
+        <div class="video-header">
+          <div class="video-header-left">
+            <span class="radar-pulse-dot"></span>
+            <span class="video-title">Live Target Stream • Radar Reconnaissance</span>
+          </div>
+          <span class="video-node-tag">NODE: BELFAST-01</span>
+        </div>
+
+        <div class="video-frame-wrapper">
+          <video id="mission-video" src="animation.gif.mp4" autoplay loop muted playsinline poster="assets/hero_hq.jpg"></video>
+          <div class="video-reticle-overlay">
+            <div class="reticle-top">
+              <span>SAT-ID: BB-771 // TARGET: VIVID HEALTHCARE</span>
+              <span>GEO: 54.5973° N, 5.9301° W</span>
+            </div>
+            <div class="reticle-bottom">
+              <span>ROLE: REGISTERED MANAGER (CARE)</span>
+              <span>STATUS: CONTINUOUS CLOUD SWEEP</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="video-controls">
+          <div class="video-status-text">
+            <span>● 24/7 Autonomous Scanner Active</span>
+          </div>
+          <div class="video-btn-group">
+            <button class="video-mini-btn" id="btn-toggle-play" onclick="toggleVideoPlay()">Pause</button>
+            <button class="video-mini-btn" id="btn-toggle-sound" onclick="toggleVideoSound()">Unmute</button>
+            <button class="video-mini-btn" onclick="openVideoModal()">Expand</button>
           </div>
         </div>
       </div>
-      <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.8rem; color: var(--text-secondary); font-family: var(--font-mono);">
-        <div>Last scan: <strong id="val-last-scan" style="color: #fff;">Just now</strong></div>
-        <div>Next check in: <strong id="val-next-countdown" style="color: var(--accent-emerald-light);">~58m</strong></div>
-      </div>
-    </div>
 
-    <!-- KPI Metrics -->
-    <div class="kpi-grid">
+      <!-- Intelligence Mission Briefing -->
+      <div class="briefing-card">
+        <div>
+          <div class="briefing-badge">Autonomous Objective</div>
+          <h2 class="briefing-title">Target Job Parameters</h2>
+          <p class="briefing-desc">
+            Direct real-time monitoring across 9 verified UK/NI recruitment endpoints for <strong>Registered Manager</strong> positions specifically connected to <strong>Vivid Healthcare Limited</strong>.
+          </p>
+
+          <div class="recon-grid">
+            <div class="recon-item">
+              <div class="recon-label">Target Employer</div>
+              <div class="recon-value">
+                <span class="recon-tag tag-target">Vivid Healthcare Search</span>
+              </div>
+            </div>
+            <div class="recon-item">
+              <div class="recon-label">Target Location</div>
+              <div class="recon-value">
+                <span class="recon-tag tag-gold">Belfast / Northern Ireland</span>
+              </div>
+            </div>
+            <div class="recon-item">
+              <div class="recon-label">Cloud Frequency</div>
+              <div class="recon-value">Every 1 Hour (Automated)</div>
+            </div>
+            <div class="recon-item">
+              <div class="recon-label">Verified Sources</div>
+              <div class="recon-value" id="briefing-sources-count">9 Sources Active</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recon Visuals Thumbnails -->
+        <div>
+          <div class="recon-label" style="margin-bottom: 0.4rem;">Reconnaissance Imagery</div>
+          <div class="gallery-preview">
+            <div class="gallery-thumb" onclick="openLightbox('assets/belfast_grid.jpg')">
+              <img src="assets/belfast_grid.jpg" alt="Belfast Grid">
+              <span class="gallery-thumb-tag">Belfast Radar Grid</span>
+            </div>
+            <div class="gallery-thumb" onclick="openLightbox('assets/hero_hq.jpg')">
+              <img src="assets/hero_hq.jpg" alt="Mission Control">
+              <span class="gallery-thumb-tag">Command Station</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Key Performance Metrics (KPI Grid) -->
+    <section class="kpi-grid">
       <div class="kpi-card">
         <div class="kpi-header">
-          <span>Active Vacancies</span>
-          <span>💼</span>
+          <span class="kpi-title">Active Vacancies</span>
+          <span class="kpi-icon">🎯</span>
         </div>
         <div class="kpi-value" id="kpi-total-jobs">0</div>
-        <div class="kpi-subtext">Registered Manager roles found</div>
+        <div class="kpi-meta">
+          <span class="kpi-indicator ind-gold"></span>
+          <span>Verified active matching roles</span>
+        </div>
       </div>
+
       <div class="kpi-card">
         <div class="kpi-header">
-          <span>Strong Matches</span>
-          <span>🎯</span>
+          <span class="kpi-title">High-Relevance Matches</span>
+          <span class="kpi-icon">🔥</span>
         </div>
-        <div class="kpi-value" id="kpi-strong-matches" style="color: var(--accent-emerald-light);">0</div>
-        <div class="kpi-subtext">Score ≥ 85 (Vivid + NI Role)</div>
+        <div class="kpi-value" id="kpi-strong-matches">0</div>
+        <div class="kpi-meta">
+          <span class="kpi-indicator ind-radar"></span>
+          <span>Score ≥ 85% (Title + Org + NI)</span>
+        </div>
       </div>
+
       <div class="kpi-card">
         <div class="kpi-header">
-          <span>Sources Monitored</span>
-          <span>📡</span>
+          <span class="kpi-title">Sources Monitored</span>
+          <span class="kpi-icon">📡</span>
         </div>
-        <div class="kpi-value" id="kpi-sources-count">10/10</div>
-        <div class="kpi-subtext">All public boards connected</div>
+        <div class="kpi-value" id="kpi-sources-count">9/9</div>
+        <div class="kpi-meta">
+          <span class="kpi-indicator ind-green"></span>
+          <span>Reed, NIJobs, Vivid, LinkedIn, Totaljobs...</span>
+        </div>
       </div>
+
       <div class="kpi-card">
         <div class="kpi-header">
-          <span>Scan Execution</span>
-          <span>⏱️</span>
+          <span class="kpi-title">Last Scan Latency</span>
+          <span class="kpi-icon">⚡</span>
         </div>
-        <div class="kpi-value" id="kpi-scan-duration">3.2s</div>
-        <div class="kpi-subtext">Cloud pipeline execution time</div>
-      </div>
-    </div>
-
-    <!-- Monitored Scope Intelligence Summary -->
-    <div class="target-scope-card">
-      <div>
-        <div class="scope-item-title">Target Entities & Keywords</div>
-        <div class="scope-item-val">Vivid Healthcare Limited & Vivid Healthcare Search</div>
-        <div class="scope-item-tags">
-          <span class="scope-tag">Registered Manager</span>
-          <span class="scope-tag">Care Home Manager</span>
-          <span class="scope-tag">Operations Manager</span>
+        <div class="kpi-value" id="kpi-scan-duration">3.58s</div>
+        <div class="kpi-meta">
+          <span class="kpi-indicator ind-cyan"></span>
+          <span id="val-last-scan">Last synced: Recent</span>
         </div>
       </div>
-      <div>
-        <div class="scope-item-title">Geographic & Regulatory Focus</div>
-        <div class="scope-item-val">Northern Ireland • Belfast & Surrounding Trusts</div>
-        <div class="scope-item-tags">
-          <span class="scope-tag">RQIA Statutory Register</span>
-          <span class="scope-tag">Belfast (BT)</span>
-          <span class="scope-tag">Antrim / Down</span>
-        </div>
-      </div>
-      <div>
-        <div class="scope-item-title">Monitored Cloud Feeds (10 Sources)</div>
-        <div class="scope-item-val">Real-time Public Web Scrapers</div>
-        <div class="scope-item-tags">
-          <span class="scope-tag">Reed (p45258)</span>
-          <span class="scope-tag">Vivid Website</span>
-          <span class="scope-tag">LinkedIn</span>
-          <span class="scope-tag">Indeed</span>
-          <span class="scope-tag">NIJobs</span>
-          <span class="scope-tag">Totaljobs</span>
-          <span class="scope-tag">CV-Library</span>
-          <span class="scope-tag">Glassdoor</span>
-          <span class="scope-tag">NHS Jobs</span>
-        </div>
-      </div>
-    </div>
+    </section>
 
-    <!-- Tabs and Filter Toolbar -->
-    <div class="tabs-bar">
-      <div class="tab-group">
-        <button class="tab-btn active" id="tab-jobs" onclick="switchTab('jobs')">Active Vacancies (<span id="tab-jobs-count">0</span>)</button>
-        <button class="tab-btn" id="tab-runs" onclick="switchTab('runs')">Hourly Scan Runs (<span id="tab-runs-count">0</span>)</button>
-      </div>
+    <!-- Main Tabs -->
+    <nav class="tab-bar">
+      <button class="tab-btn active" id="tab-btn-jobs" onclick="switchTab('jobs')">
+        <span>Active Vacancies</span>
+        <span class="tab-count" id="tab-jobs-count">0</span>
+      </button>
+      <button class="tab-btn" id="tab-btn-runs" onclick="switchTab('runs')">
+        <span>Hourly Cloud Runs</span>
+        <span class="tab-count" id="tab-runs-count">0</span>
+      </button>
+    </nav>
 
-      <div class="filter-group" id="jobs-filters">
-        <input type="text" id="search-query" class="search-input" placeholder="Search by title, salary..." oninput="applyFilters()">
-        <select id="filter-score" class="select-input" onchange="applyFilters()">
-          <option value="all">All Relevance Scores</option>
-          <option value="strong">Strong Match (≥ 85)</option>
-          <option value="medium">Medium Match (60–84)</option>
-        </select>
-        <select id="filter-source" class="select-input" onchange="applyFilters()">
-          <option value="all">All Sources</option>
-          <option value="reed">Reed.co.uk</option>
-          <option value="vivid_website">Vivid Website</option>
-          <option value="linkedin">LinkedIn</option>
-          <option value="indeed">Indeed</option>
-          <option value="nijobs">NIJobs</option>
-          <option value="totaljobs">Totaljobs</option>
-          <option value="cv_library">CV-Library</option>
-          <option value="glassdoor">Glassdoor</option>
-          <option value="nhs_jobs">NHS Jobs</option>
-          <option value="search_engine">Search Engine</option>
-        </select>
-      </div>
-    </div>
+    <!-- TAB 1: Active Vacancies -->
+    <div id="pane-jobs" class="tab-pane active">
+      <div id="jobs-container" class="table-container">
+        <table class="intel-table" id="jobs-table">
+          <thead>
+            <tr>
+              <th>Role Title</th>
+              <th>Company</th>
+              <th>Location</th>
+              <th>Salary</th>
+              <th>Source</th>
+              <th>Relevance</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="jobs-tbody">
+            <!-- Dynamically Rendered -->
+          </tbody>
+        </table>
 
-    <!-- VIEW 1: ACTIVE JOBS TABLE -->
-    <div id="view-jobs" class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th style="width: 110px;">Relevance</th>
-            <th>Role & Company</th>
-            <th style="width: 120px;">Source</th>
-            <th>Location</th>
-            <th>Salary</th>
-            <th>Discovered</th>
-            <th style="width: 140px; text-align: right;">Action</th>
-          </tr>
-        </thead>
-        <tbody id="jobs-tbody">
-          <!-- Populated dynamically via JS -->
-        </tbody>
-      </table>
-      <div id="jobs-empty" class="empty-state" style="display: none;">
-        <div class="empty-icon">🛡️</div>
-        <h3 class="empty-title">No Active Vacancies Detected Right Now</h3>
-        <p class="empty-desc">
-          All 10 sources were checked in the cloud. Currently, <strong>Vivid Healthcare Limited / Vivid Healthcare Search Limited</strong> has 0 public job openings for Registered Manager roles in Northern Ireland. Unrelated third-party jobs are automatically filtered out.
-        </p>
-        <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); padding: 0.4rem 0.9rem; border-radius: 9999px; font-size: 0.8rem; color: #34d399;">
-          <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
-          <span>Cloud Watcher Active • Next check in ~58m</span>
+        <!-- Clean Zero-Noise Empty State -->
+        <div id="jobs-empty" class="empty-state" style="display: none;">
+          <div class="empty-icon-wrap">🛡️</div>
+          <h3 class="empty-title">No Active Vacancies Detected Right Now</h3>
+          <p class="empty-desc">
+            All 9 recruitment sources were scanned directly in the cloud. Currently, <strong>Vivid Healthcare Limited / Vivid Healthcare Search Limited</strong> has <strong>0</strong> active public job advertisements for <strong>Registered Manager</strong> roles located in <strong>Northern Ireland</strong>.
+          </p>
+          <div class="empty-meta-tags">
+            <span class="empty-tag">✓ Zero Third-Party Retail Noise</span>
+            <span class="empty-tag">✓ Dead URLs & Expired Cache Rejected</span>
+            <span class="empty-tag">✓ Strict Northern Ireland Boundaries Enforced</span>
+            <span class="empty-tag">✓ Next Cloud Run In < 1 Hour</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- VIEW 2: HOURLY SCAN RUNS AUDIT TABLE -->
-    <div id="view-runs" class="table-container" style="display: none;">
-      <table>
-        <thead>
-          <tr>
-            <th style="width: 80px;">Run #</th>
-            <th>Executed At (UTC)</th>
-            <th>Status</th>
-            <th>Duration</th>
-            <th>Sources Scanned</th>
-            <th>Listings Found</th>
-            <th>New / Updated</th>
-          </tr>
-        </thead>
-        <tbody id="runs-tbody">
-          <!-- Populated dynamically via JS -->
-        </tbody>
-      </table>
+    <!-- TAB 2: Hourly Cloud Runs History -->
+    <div id="pane-runs" class="tab-pane">
+      <div class="table-container">
+        <table class="intel-table">
+          <thead>
+            <tr>
+              <th>Run ID</th>
+              <th>Started (UTC)</th>
+              <th>Duration</th>
+              <th>Status</th>
+              <th>Listings Found</th>
+              <th>New</th>
+              <th>Sources Breakdown</th>
+            </tr>
+          </thead>
+          <tbody id="runs-tbody">
+            <!-- Dynamically Rendered -->
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Footer -->
-    <footer style="margin-top: 2rem; padding: 1.5rem 0; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: 0.775rem; color: var(--text-muted);">
+    <footer class="app-footer">
       <div>
-        Vivid Healthcare Job Watcher • Automated Cloud Service on GitHub Pages
+        <span>Budget Brian Intelligence Node • Powered 100% Serverless on GitHub Actions & Pages</span>
       </div>
       <div>
-        Repository: <a href="https://github.com/mwjouini/budget-brian" target="_blank" rel="noopener noreferrer" style="color: var(--accent-emerald-light); text-decoration: none;">mwjouini/budget-brian</a>
+        <span>No Laptop Connection Required • 24/7 Autonomous Cloud Execution</span>
       </div>
     </footer>
+
   </div>
 
-  <!-- PASSWORD CHANGE MODAL -->
-  <div id="password-modal" class="modal-backdrop hidden">
-    <div class="modal-box">
-      <h3 style="font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem;">Change Access Passcode</h3>
-      <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1.25rem;">
-        Set a new custom password for logging into this dashboard on your browser.
+  <!-- Password Change Modal -->
+  <div id="password-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Update Authorization Passcode</h3>
+        <button class="modal-close" onclick="closePasswordModal()">&times;</button>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+        Set a personalized authorization key for your browser session.
       </p>
       <div class="form-group">
         <label class="form-label" for="new-passcode">New Passcode</label>
-        <input type="password" id="new-passcode" class="form-input" placeholder="Enter new passcode" required>
+        <input type="password" id="new-passcode" class="form-input" placeholder="Enter new passcode (min 4 chars)...">
       </div>
-      <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
+      <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
         <button class="btn btn-secondary" onclick="closePasswordModal()">Cancel</button>
-        <button class="btn btn-primary" onclick="saveNewPassword()">Save Passcode</button>
+        <button class="btn btn-gold" onclick="saveNewPassword()">Save Passcode</button>
       </div>
     </div>
   </div>
 
-  <!-- JAVASCRIPT LOGIC -->
-  <script>
-    // Configuration & State
-    const DEFAULT_PASSCODE = "vivid2026";
-    let allJobs = [];
-    let allRuns = [];
-    let currentTab = "jobs";
+  <!-- Recon Gallery Modal -->
+  <div id="gallery-modal" class="modal-overlay hidden">
+    <div class="modal-card" style="max-width: 820px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Visual Reconnaissance & Surveillance Telemetry</h3>
+        <button class="modal-close" onclick="closeGalleryModal()">&times;</button>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+        <div style="border-radius: 12px; overflow: hidden; border: 1px solid var(--border-medium); cursor: pointer;" onclick="openLightbox('assets/belfast_grid.jpg')">
+          <img src="assets/belfast_grid.jpg" alt="Belfast Grid" style="width: 100%; height: 200px; object-fit: cover; display: block;">
+          <div style="padding: 0.75rem; background: var(--bg-surface-elevated); font-size: 0.8rem; font-weight: 600;">
+            Belfast Surveillance Radar Grid (H&W / Hospitals)
+          </div>
+        </div>
+        <div style="border-radius: 12px; overflow: hidden; border: 1px solid var(--border-medium); cursor: pointer;" onclick="openLightbox('assets/hero_hq.jpg')">
+          <img src="assets/hero_hq.jpg" alt="Mission Control" style="width: 100%; height: 200px; object-fit: cover; display: block;">
+          <div style="padding: 0.75rem; background: var(--bg-surface-elevated); font-size: 0.8rem; font-weight: 600;">
+            Budget Brian Mission Control Station
+          </div>
+        </div>
+      </div>
+      <div style="text-align: right;">
+        <button class="btn btn-secondary" onclick="closeGalleryModal()">Close</button>
+      </div>
+    </div>
+  </div>
 
-    // Hash helper
-    async function sha256(str) {
-      const buffer = new TextEncoder().encode(str);
-      const digest = await crypto.subtle.digest("SHA-256", buffer);
-      return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, "0")).join("");
+  <!-- Lightbox Modal -->
+  <div id="lightbox-modal" class="modal-overlay hidden" onclick="closeLightbox()">
+    <div class="modal-card">
+      <img id="lightbox-img" src="" alt="Enlarged Recon">
+    </div>
+  </div>
+
+  <script>
+    // SHA-256 for passcode verification
+    async function sha256(message) {
+      const msgBuffer = new TextEncoder().encode(message);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
-    // Authentication
-    async function initAuth() {
-      const storedToken = localStorage.getItem("vivid_auth_token");
-      const validHash = localStorage.getItem("vivid_custom_hash") || await sha256(DEFAULT_PASSCODE);
-      
-      if (storedToken && storedToken === validHash) {
+    // Default password hash for 'vivid2026'
+    const DEFAULT_HASH = "b9ef25bf238210492cbcc2686fa7f7fa2032047805d7620ebbb6d34bbf63e5e4";
+
+    let allJobs = [];
+    let allRuns = [];
+
+    // Authentication Init
+    document.addEventListener("DOMContentLoaded", async () => {
+      const storedToken = localStorage.getItem("vivid_auth_token") || sessionStorage.getItem("vivid_auth_token");
+      const customHash = localStorage.getItem("vivid_custom_hash");
+      const activeHash = customHash || DEFAULT_HASH;
+
+      if (storedToken && storedToken === activeHash) {
         unlockDashboard();
       } else {
         document.getElementById("login-overlay").classList.remove("hidden");
-        document.getElementById("dashboard-app").style.display = "none";
+        document.getElementById("login-password").focus();
       }
-    }
+    });
 
     async function handleLogin(e) {
       e.preventDefault();
-      const input = document.getElementById("login-password").value.trim();
-      const validHash = localStorage.getItem("vivid_custom_hash") || await sha256(DEFAULT_PASSCODE);
-      const inputHash = await sha256(input);
+      const entered = document.getElementById("login-password").value.trim();
+      const hashed = await sha256(entered);
+      const customHash = localStorage.getItem("vivid_custom_hash");
+      const activeHash = customHash || DEFAULT_HASH;
 
-      if (inputHash === validHash || input === DEFAULT_PASSCODE) {
-        if (document.getElementById("remember-me").checked) {
-          localStorage.setItem("vivid_auth_token", inputHash);
-        } else {
-          sessionStorage.setItem("vivid_auth_token", inputHash);
-        }
+      if (hashed === activeHash) {
+        localStorage.setItem("vivid_auth_token", hashed);
         unlockDashboard();
       } else {
-        alert("Incorrect passcode. Please enter the valid authorization code.");
+        alert("Incorrect authorization passcode. Please enter the valid authorization key.");
         document.getElementById("login-password").focus();
       }
     }
@@ -938,17 +1335,86 @@
       const newHash = await sha256(newPass);
       localStorage.setItem("vivid_custom_hash", newHash);
       localStorage.setItem("vivid_auth_token", newHash);
-      alert("Passcode updated successfully!");
+      alert("Authorization passcode updated successfully!");
       closePasswordModal();
+    }
+
+    function openGalleryModal() {
+      document.getElementById("gallery-modal").classList.remove("hidden");
+    }
+
+    function closeGalleryModal() {
+      document.getElementById("gallery-modal").classList.add("hidden");
+    }
+
+    function openLightbox(src) {
+      document.getElementById("lightbox-img").src = src;
+      document.getElementById("lightbox-modal").classList.remove("hidden");
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightbox-modal").classList.add("hidden");
+    }
+
+    // Video Controls
+    function toggleVideoPlay() {
+      const v = document.getElementById("mission-video");
+      const btn = document.getElementById("btn-toggle-play");
+      if (v.paused) {
+        v.play();
+        btn.textContent = "Pause";
+      } else {
+        v.pause();
+        btn.textContent = "Play";
+      }
+    }
+
+    function toggleVideoSound() {
+      const v = document.getElementById("mission-video");
+      const btn = document.getElementById("btn-toggle-sound");
+      if (v.muted) {
+        v.muted = false;
+        btn.textContent = "Mute";
+      } else {
+        v.muted = true;
+        btn.textContent = "Unmute";
+      }
+    }
+
+    function openVideoModal() {
+      const v = document.getElementById("mission-video");
+      if (v.requestFullscreen) {
+        v.requestFullscreen();
+      } else if (v.webkitRequestFullscreen) {
+        v.webkitRequestFullscreen();
+      }
+    }
+
+    // Tab Switching
+    function switchTab(tab) {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+
+      document.getElementById("tab-btn-" + tab).classList.add("active");
+      document.getElementById("pane-" + tab).classList.add("active");
+    }
+
+    // Manual Scan Trigger
+    function triggerManualScan() {
+      const confirmed = confirm("Open GitHub Actions to manually trigger an immediate cloud scan across all 9 endpoints?");
+      if (confirmed) {
+        window.open("https://github.com/mwjouini/budget-brian/actions/workflows/watcher.yml", "_blank");
+      }
     }
 
     // Data Fetching
     async function loadDashboardData() {
       try {
+        const cacheBuster = "?t=" + Date.now();
         const [statsRes, jobsRes, runsRes] = await Promise.all([
-          fetch("data/stats.json?t=" + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null),
-          fetch("data/jobs.json?t=" + Date.now()).then(r => r.ok ? r.json() : []).catch(() => []),
-          fetch("data/runs.json?t=" + Date.now()).then(r => r.ok ? r.json() : []).catch(() => []),
+          fetch("data/stats.json" + cacheBuster).then(r => r.ok ? r.json() : null).catch(() => null),
+          fetch("data/jobs.json" + cacheBuster).then(r => r.ok ? r.json() : []).catch(() => []),
+          fetch("data/runs.json" + cacheBuster).then(r => r.ok ? r.json() : []).catch(() => []),
         ]);
 
         allJobs = jobsRes || [];
@@ -958,12 +1424,13 @@
         if (statsRes) {
           document.getElementById("kpi-total-jobs").textContent = statsRes.total_active_jobs || 0;
           document.getElementById("kpi-strong-matches").textContent = statsRes.strong_matches || 0;
-          document.getElementById("kpi-sources-count").textContent = (statsRes.sources_monitored || 10) + "/10";
-          document.getElementById("kpi-scan-duration").textContent = (statsRes.last_run_duration || 3.2) + "s";
+          document.getElementById("kpi-sources-count").textContent = (statsRes.sources_monitored || 9) + "/9";
+          document.getElementById("briefing-sources-count").textContent = (statsRes.sources_monitored || 9) + " Sources Active";
+          document.getElementById("kpi-scan-duration").textContent = (statsRes.last_run_duration || 3.58) + "s";
           
           if (statsRes.last_scan_utc) {
             const scanDate = new Date(statsRes.last_scan_utc);
-            document.getElementById("val-last-scan").textContent = scanDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + " UTC";
+            document.getElementById("val-last-scan").textContent = "Last scan: " + scanDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + " UTC";
           }
         }
 
@@ -992,35 +1459,36 @@
       jobs.forEach(j => {
         const tr = document.createElement("tr");
 
-        let scoreClass = "score-weak";
-        if (j.relevance_score >= 85) scoreClass = "score-strong";
-        else if (j.relevance_score >= 60) scoreClass = "score-medium";
-
-        const pubDate = j.published_at ? new Date(j.published_at).toLocaleDateString() : "Recent";
+        let badgeClass = "badge-generic";
+        if (j.source === "reed") badgeClass = "badge-reed";
+        else if (j.source === "vivid_website") badgeClass = "badge-vivid";
+        else if (j.source === "linkedin") badgeClass = "badge-linkedin";
+        else if (j.source === "nijobs") badgeClass = "badge-nijobs";
 
         tr.innerHTML = `
           <td>
-            <span class="score-badge ${scoreClass}">${Math.round(j.relevance_score)}/100</span>
+            <div style="font-weight: 700; color: #fff;">${escapeHtml(j.title)}</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">${escapeHtml(j.job_type || 'Full-time')}</div>
           </td>
           <td>
-            <a href="${j.source_url}" target="_blank" rel="noopener noreferrer" class="job-title-link">${escapeHtml(j.title)}</a>
-            <div class="job-company-name">${escapeHtml(j.company)}</div>
+            <span style="font-weight: 600; color: var(--accent-gold-light);">${escapeHtml(j.company)}</span>
           </td>
           <td>
-            <span class="source-tag">${escapeHtml(j.source)}</span>
-          </td>
-          <td style="color: var(--text-secondary); font-size: 0.85rem;">
-            ${escapeHtml(j.location || "Belfast, NI")}
+            <span>📍 ${escapeHtml(j.location || 'Belfast, NI')}</span>
           </td>
           <td>
-            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: #fff;">${escapeHtml(j.salary || "Not stated")}</span>
+            <span style="font-family: var(--font-mono); font-weight: 600;">${escapeHtml(j.salary || 'Competitive')}</span>
           </td>
-          <td style="color: var(--text-muted); font-size: 0.8rem; font-family: var(--font-mono);">
-            ${pubDate}
+          <td>
+            <span class="source-badge ${badgeClass}">${escapeHtml(j.source)}</span>
           </td>
-          <td style="text-align: right;">
-            <a href="${j.source_url}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 0.35rem 0.75rem; font-size: 0.775rem;">
-              <span>View Advert</span> ↗
+          <td>
+            <span style="font-family: var(--font-mono); font-weight: 700; color: var(--accent-gold);">${Math.round(j.relevance_score || 100)}%</span>
+          </td>
+          <td>
+            <a href="${escapeHtml(j.source_url)}" target="_blank" rel="noopener noreferrer" class="btn btn-gold" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;">
+              <span>View Job</span>
+              <span>↗</span>
             </a>
           </td>
         `;
@@ -1034,116 +1502,53 @@
       tbody.innerHTML = "";
 
       if (!runs || runs.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 2rem;">No scan runs recorded yet.</td></tr>`;
+        tbody.innerHTML = "<tr><td colspan='7' style='text-align:center; padding: 2rem; color: var(--text-muted);'>No cloud scan runs recorded yet.</td></tr>";
         return;
       }
 
       runs.forEach(r => {
         const tr = document.createElement("tr");
-        const dateStr = r.started_at ? new Date(r.started_at).toLocaleString() : "Unknown";
-        
-        let statusBadge = `<span class="score-badge score-strong">SUCCESS</span>`;
-        if (r.status === "error" || r.errors?.length > 0) {
-          statusBadge = `<span class="score-badge score-medium">${r.status.toUpperCase()}</span>`;
+        const startDate = new Date(r.started_at);
+        const timeFormatted = startDate.toLocaleDateString() + " " + startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        let statusClass = "status-success";
+        if (r.status === "partial") statusClass = "status-partial";
+        else if (r.status === "error") statusClass = "status-error";
+
+        // Count active sources
+        let activeSourcesCount = 0;
+        let totalSourcesCount = 0;
+        if (r.sources_scanned) {
+          totalSourcesCount = Object.keys(r.sources_scanned).length;
+          activeSourcesCount = Object.values(r.sources_scanned).filter(s => s.status === "active").length;
         }
 
-        const sourceCount = r.sources_scanned ? Object.keys(r.sources_scanned).length : 10;
-
         tr.innerHTML = `
-          <td style="font-family: var(--font-mono); font-weight: 600;">#${r.id}</td>
-          <td style="font-family: var(--font-mono); font-size: 0.8rem;">${dateStr}</td>
-          <td>${statusBadge}</td>
-          <td style="font-family: var(--font-mono); font-size: 0.8rem;">${r.duration_seconds || 3.2}s</td>
-          <td><span class="source-tag">${sourceCount} Sources OK</span></td>
-          <td style="font-weight: 600;">${r.listings_found || 0}</td>
-          <td style="color: var(--accent-emerald-light);">${r.new_listings || 0} / ${r.updated_listings || 0}</td>
+          <td><code style="color: var(--accent-cyan);">#${r.id}</code></td>
+          <td style="font-family: var(--font-mono);">${timeFormatted}</td>
+          <td style="font-family: var(--font-mono); font-weight: 600;">${r.duration_seconds}s</td>
+          <td><span class="status-badge ${statusClass}">${r.status}</span></td>
+          <td style="font-family: var(--font-mono); font-weight: 700;">${r.listings_found || 0}</td>
+          <td style="font-family: var(--font-mono); color: var(--accent-gold); font-weight: 700;">${r.new_listings || 0}</td>
+          <td>
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary);">
+              ${activeSourcesCount}/${totalSourcesCount} Endpoints Ok
+            </span>
+          </td>
         `;
         tbody.appendChild(tr);
       });
     }
 
-    // Filtering logic
-    function applyFilters() {
-      const q = document.getElementById("search-query").value.toLowerCase().trim();
-      const scoreFilter = document.getElementById("filter-score").value;
-      const sourceFilter = document.getElementById("filter-source").value;
-
-      const filtered = allJobs.filter(j => {
-        if (q) {
-          const hay = `${j.title} ${j.company} ${j.location} ${j.salary} ${j.description}`.toLowerCase();
-          if (!hay.includes(q)) return false;
-        }
-        if (scoreFilter === "strong" && j.relevance_score < 85) return false;
-        if (scoreFilter === "medium" && (j.relevance_score < 60 || j.relevance_score >= 85)) return false;
-        if (sourceFilter !== "all" && j.source !== sourceFilter) return false;
-        return true;
-      });
-
-      renderJobs(filtered);
+    function escapeHtml(text) {
+      if (!text) return "";
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
-
-    // Tabs switching
-    function switchTab(tab) {
-      currentTab = tab;
-      if (tab === "jobs") {
-        document.getElementById("tab-jobs").classList.add("active");
-        document.getElementById("tab-runs").classList.remove("active");
-        document.getElementById("view-jobs").style.display = "block";
-        document.getElementById("view-runs").style.display = "none";
-        document.getElementById("jobs-filters").style.display = "flex";
-      } else {
-        document.getElementById("tab-jobs").classList.remove("active");
-        document.getElementById("tab-runs").classList.add("active");
-        document.getElementById("view-jobs").style.display = "none";
-        document.getElementById("view-runs").style.display = "block";
-        document.getElementById("jobs-filters").style.display = "none";
-      }
-    }
-
-    // Export helpers
-    function exportData(type) {
-      if (type === "json") {
-        const blob = new Blob([JSON.stringify(allJobs, null, 2)], { type: "application/json" });
-        downloadBlob(blob, `vivid_jobs_${Date.now()}.json`);
-      } else {
-        if (!allJobs.length) { alert("No jobs to export."); return; }
-        const headers = ["id", "title", "company", "location", "salary", "relevance_score", "source_url"];
-        const rows = allJobs.map(j => [
-          j.id,
-          `"${(j.title || "").replace(/"/g, '""')}"`,
-          `"${(j.company || "").replace(/"/g, '""')}"`,
-          `"${(j.location || "").replace(/"/g, '""')}"`,
-          `"${(j.salary || "").replace(/"/g, '""')}"`,
-          j.relevance_score,
-          `"${(j.source_url || "")}"`
-        ]);
-        const csvContent = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
-        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-        downloadBlob(blob, `vivid_jobs_${Date.now()}.csv`);
-      }
-    }
-
-    function downloadBlob(blob, filename) {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-
-    function escapeHtml(str) {
-      if (!str) return "";
-      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-    }
-
-    // Auto-refresh data every 5 minutes in background
-    setInterval(loadDashboardData, 5 * 60 * 1000);
-
-    // Initialize on load
-    initAuth();
   </script>
 </body>
 </html>
