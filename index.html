@@ -12,33 +12,29 @@
 
   <style>
     :root {
-      /* Bespoke Mission Control Color Tokens */
-      --bg-base: #06090f;
-      --bg-glass-card: rgba(14, 20, 32, 0.72);
-      --bg-glass-card-hover: rgba(20, 28, 44, 0.85);
-      --bg-glass-elevated: rgba(22, 32, 50, 0.88);
+      /* Mission Control Color System */
+      --bg-base: #060911;
+      --bg-card: rgba(13, 19, 33, 0.78);
+      --bg-card-hover: rgba(18, 27, 46, 0.9);
+      --bg-elevated: rgba(20, 30, 52, 0.92);
       
-      --border-subtle: rgba(255, 255, 255, 0.1);
-      --border-medium: rgba(255, 255, 255, 0.18);
-      --border-gold: rgba(245, 158, 11, 0.4);
-      --border-radar: rgba(239, 68, 68, 0.45);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-medium: rgba(255, 255, 255, 0.16);
+      --border-gold: rgba(245, 158, 11, 0.35);
+      --border-radar: rgba(239, 68, 68, 0.35);
       
       --text-main: #f8fafc;
       --text-secondary: #94a3b8;
       --text-muted: #64748b;
       
-      /* Vibrant Accents from HD Video & Artwork */
       --accent-gold: #f59e0b;
       --accent-gold-light: #fbbf24;
-      --accent-gold-glow: rgba(245, 158, 11, 0.28);
+      --accent-gold-glow: rgba(245, 158, 11, 0.25);
       
       --accent-radar: #ef4444;
-      --accent-radar-glow: rgba(239, 68, 68, 0.35);
-      
       --accent-cyan: #38bdf8;
-      --accent-cyan-glow: rgba(56, 189, 248, 0.25);
-      
-      --accent-success: #10b981;
+      --accent-emerald: #10b981;
+      --accent-emerald-glow: rgba(16, 185, 129, 0.25);
       
       --radius-sm: 8px;
       --radius-md: 14px;
@@ -48,9 +44,8 @@
       --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
       
-      --shadow-soft: 0 16px 40px -12px rgba(0, 0, 0, 0.75);
-      --shadow-gold: 0 0 35px rgba(245, 158, 11, 0.25);
-      --shadow-radar: 0 0 35px rgba(239, 68, 68, 0.3);
+      --shadow-card: 0 16px 40px -12px rgba(0, 0, 0, 0.75);
+      --shadow-gold: 0 0 30px rgba(245, 158, 11, 0.2);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -67,7 +62,7 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Ambient Living Video & Imagery Background */
+    /* Ambient Living Background Video */
     .ambient-bg-layer {
       position: fixed;
       inset: 0;
@@ -85,16 +80,16 @@
       height: auto;
       transform: translate(-50%, -50%);
       object-fit: cover;
-      opacity: 0.35;
-      filter: saturate(1.2) contrast(1.1);
+      opacity: 0.28;
+      filter: saturate(1.2) contrast(1.15);
     }
     .ambient-overlay {
       position: absolute;
       inset: 0;
       background: 
-        radial-gradient(circle at 20% 15%, rgba(245, 158, 11, 0.15), transparent 50%),
-        radial-gradient(circle at 80% 85%, rgba(239, 68, 68, 0.12), transparent 50%),
-        linear-gradient(180deg, rgba(6, 9, 15, 0.72) 0%, rgba(8, 12, 20, 0.85) 60%, rgba(6, 9, 15, 0.95) 100%);
+        radial-gradient(circle at 15% 15%, rgba(245, 158, 11, 0.12), transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.1), transparent 45%),
+        linear-gradient(180deg, rgba(6, 9, 17, 0.78) 0%, rgba(8, 13, 24, 0.88) 50%, rgba(6, 9, 17, 0.98) 100%);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
     }
@@ -105,16 +100,18 @@
     ::-webkit-scrollbar-thumb { background: rgba(245, 158, 11, 0.3); border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: rgba(245, 158, 11, 0.6); }
 
-    /* Login Overlay Gate */
+    /* ========================================================
+       SECURE LOGIN GATE (No password hints, SHA-256 verification)
+       ======================================================== */
     #login-overlay {
       position: fixed;
       inset: 0;
-      z-index: 2000;
+      z-index: 3000;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 1.25rem;
-      background: rgba(6, 9, 15, 0.75);
+      background: rgba(6, 9, 17, 0.82);
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
       transition: opacity 0.35s ease, visibility 0.35s ease;
@@ -124,195 +121,231 @@
       visibility: hidden;
       pointer-events: none;
     }
-    .login-box {
-      background: linear-gradient(145deg, rgba(18, 26, 42, 0.88), rgba(10, 15, 26, 0.95));
-      border: 1px solid var(--border-gold);
-      border-radius: var(--radius-lg);
-      box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.85), var(--shadow-gold);
-      max-width: 440px;
+    .login-card {
       width: 100%;
+      max-width: 420px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
       padding: 2.5rem 2rem;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), var(--shadow-gold);
       text-align: center;
       position: relative;
       overflow: hidden;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      animation: floatCard 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .login-box::before {
-      content: "";
+    @keyframes floatCard {
+      from { transform: translateY(18px) scale(0.97); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    .login-card::before {
+      content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       height: 3px;
-      background: linear-gradient(90deg, var(--accent-radar), var(--accent-gold), var(--accent-cyan));
+      background: linear-gradient(90deg, var(--accent-gold), var(--accent-emerald), var(--accent-cyan));
     }
     .login-avatar-ring {
-      width: 92px;
-      height: 92px;
+      width: 86px;
+      height: 86px;
       margin: 0 auto 1.25rem;
       border-radius: 50%;
-      border: 2px solid var(--accent-gold);
-      box-shadow: 0 0 30px var(--accent-gold-glow);
-      overflow: hidden;
-      background: #000;
+      padding: 3px;
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-emerald));
+      box-shadow: 0 0 24px var(--accent-gold-glow);
       position: relative;
     }
     .login-avatar-ring img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      border-radius: 50%;
       display: block;
+      background: #000;
+    }
+    .login-avatar-ring::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 14px;
+      height: 14px;
+      background: var(--accent-emerald);
+      border: 2px solid #000;
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent-emerald);
     }
     .login-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.35rem;
       padding: 0.25rem 0.75rem;
       border-radius: var(--radius-full);
-      background: rgba(245, 158, 11, 0.15);
+      background: rgba(245, 158, 11, 0.12);
       border: 1px solid var(--border-gold);
+      color: var(--accent-gold);
       font-size: 0.7rem;
       font-weight: 700;
-      color: var(--accent-gold-light);
-      text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 0.75rem;
+      text-transform: uppercase;
       font-family: var(--font-mono);
+      margin-bottom: 0.75rem;
     }
     .login-title {
       font-size: 1.6rem;
       font-weight: 800;
-      color: #fff;
       letter-spacing: -0.02em;
       margin-bottom: 0.35rem;
     }
     .login-subtitle {
+      font-size: 0.82rem;
       color: var(--text-secondary);
-      font-size: 0.875rem;
       margin-bottom: 1.75rem;
-      line-height: 1.45;
+      line-height: 1.4;
     }
-    .form-group {
-      text-align: left;
+    .password-field-wrap {
+      position: relative;
       margin-bottom: 1.25rem;
+      text-align: left;
     }
     .form-label {
       display: block;
-      font-size: 0.725rem;
-      font-weight: 700;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-      margin-bottom: 0.45rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.4rem;
+    }
+    .form-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
     }
     .form-input {
       width: 100%;
-      background: rgba(6, 9, 15, 0.85);
+      padding: 0.85rem 2.75rem 0.85rem 1rem;
+      background: rgba(6, 9, 17, 0.8);
       border: 1px solid var(--border-medium);
       border-radius: var(--radius-sm);
-      padding: 0.95rem 1.1rem;
-      font-size: 1rem;
-      color: #fff;
-      font-family: inherit;
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      outline: none;
       transition: all 0.2s ease;
-      min-height: 48px;
     }
     .form-input:focus {
-      outline: none;
       border-color: var(--accent-gold);
-      box-shadow: 0 0 0 3px var(--accent-gold-glow);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
     }
+    .toggle-pwd-btn {
+      position: absolute;
+      right: 0.75rem;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0.25rem;
+      font-size: 1.1rem;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .toggle-pwd-btn:hover { color: var(--accent-gold); }
+    
     .login-btn {
       width: 100%;
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      color: #06090f;
+      padding: 0.85rem 1.25rem;
+      background: linear-gradient(135deg, var(--accent-gold), #d97706);
+      color: #000;
       border: none;
       border-radius: var(--radius-sm);
-      padding: 1rem;
-      font-size: 1rem;
-      font-weight: 800;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      font-weight: 700;
       cursor: pointer;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 18px rgba(245, 158, 11, 0.4);
-      min-height: 48px;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 18px var(--accent-gold-glow);
     }
-    .login-btn:hover, .login-btn:active {
-      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    .login-btn:hover {
       transform: translateY(-1px);
-      box-shadow: 0 6px 24px rgba(245, 158, 11, 0.55);
+      box-shadow: 0 6px 24px rgba(245, 158, 11, 0.4);
     }
-    .login-hint {
-      margin-top: 1.25rem;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      background: rgba(255, 255, 255, 0.03);
+    .login-btn:active { transform: translateY(0); }
+    .login-error {
+      display: none;
+      color: #fca5a5;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      border-radius: var(--radius-sm);
       padding: 0.6rem 0.85rem;
-      border-radius: 6px;
-      border: 1px dashed var(--border-subtle);
+      font-size: 0.78rem;
+      margin-bottom: 1rem;
+      font-family: var(--font-mono);
+      text-align: left;
+    }
+    .login-security-tag {
+      margin-top: 1.25rem;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
       font-family: var(--font-mono);
     }
 
-    /* Main App Layout */
+    /* ========================================================
+       AUTHENTICATED DASHBOARD LAYOUT
+       ======================================================== */
     .app-layout {
       position: relative;
       z-index: 10;
-      max-width: 1440px;
+      max-width: 1380px;
       margin: 0 auto;
-      padding: 1.25rem 1.5rem 3rem;
-    }
-    @media (max-width: 768px) {
-      .app-layout { padding: 0.85rem 0.85rem 2.5rem; }
+      padding: 1.25rem 1.5rem 3.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
     }
 
-    /* Top Navigation Bar */
+    /* Top Navigation Header */
     .navbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
       gap: 1rem;
-      padding: 1rem 1.5rem;
-      background: var(--bg-glass-card);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--border-subtle);
+      padding: 0.9rem 1.4rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
       border-radius: var(--radius-lg);
-      margin-bottom: 1.5rem;
-      box-shadow: var(--shadow-soft);
-    }
-    @media (max-width: 768px) {
-      .navbar {
-        padding: 0.85rem 1rem;
-        gap: 0.75rem;
-        border-radius: var(--radius-md);
-      }
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-card);
+      flex-wrap: wrap;
     }
     .nav-brand {
       display: flex;
       align-items: center;
-      gap: 0.85rem;
+      gap: 0.9rem;
     }
     .brand-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      border: 2px solid var(--accent-gold);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      padding: 2px;
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-emerald));
       box-shadow: 0 0 16px var(--accent-gold-glow);
-      overflow: hidden;
       flex-shrink: 0;
-    }
-    @media (max-width: 480px) {
-      .brand-avatar { width: 40px; height: 40px; border-radius: 10px; }
     }
     .brand-avatar img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      border-radius: 50%;
+      display: block;
     }
     .brand-meta {
       display: flex;
@@ -321,81 +354,87 @@
     .brand-title-wrap {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.6rem;
     }
     .brand-title {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 800;
-      color: #fff;
-      letter-spacing: -0.01em;
-    }
-    @media (max-width: 480px) {
-      .brand-title { font-size: 1.05rem; }
+      letter-spacing: -0.02em;
     }
     .brand-status-pill {
-      font-size: 0.65rem;
+      font-size: 0.68rem;
       font-weight: 700;
-      padding: 0.15rem 0.5rem;
-      border-radius: var(--radius-full);
-      background: rgba(239, 68, 68, 0.18);
-      border: 1px solid var(--border-radar);
-      color: #fca5a5;
       font-family: var(--font-mono);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: var(--radius-full);
+      padding: 0.15rem 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .brand-status-pill::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--accent-emerald);
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--accent-emerald);
+      animation: pulseDot 2s infinite;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
     }
     .brand-subtitle {
-      font-size: 0.775rem;
+      font-size: 0.74rem;
       color: var(--text-secondary);
       font-family: var(--font-mono);
-    }
-    @media (max-width: 480px) {
-      .brand-subtitle { font-size: 0.7rem; }
     }
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.65rem;
       flex-wrap: wrap;
-    }
-    @media (max-width: 768px) {
-      .nav-actions { width: 100%; justify-content: space-between; }
-      .nav-actions .btn { flex: 1 1 auto; text-align: center; justify-content: center; padding: 0.5rem 0.6rem; font-size: 0.775rem; }
     }
 
     /* Buttons */
     .btn {
+      padding: 0.55rem 1rem;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 0.45rem;
-      padding: 0.55rem 1rem;
-      font-size: 0.825rem;
-      font-weight: 700;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      text-decoration: none;
       transition: all 0.2s ease;
       border: 1px solid transparent;
-      font-family: inherit;
-      min-height: 40px;
+      outline: none;
+      text-decoration: none;
+      white-space: nowrap;
+      user-select: none;
     }
     .btn-gold {
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      color: #06090f;
-      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+      background: linear-gradient(135deg, var(--accent-gold), #d97706);
+      color: #000;
+      font-weight: 700;
+      box-shadow: 0 4px 14px var(--accent-gold-glow);
     }
-    .btn-gold:hover, .btn-gold:active {
-      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    .btn-gold:hover {
       transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
     }
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.06);
-      border-color: var(--border-subtle);
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--border-medium);
       color: var(--text-main);
     }
     .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: var(--border-medium);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
     }
     .btn-danger {
       background: rgba(239, 68, 68, 0.12);
@@ -403,95 +442,127 @@
       color: #fca5a5;
     }
     .btn-danger:hover {
-      background: rgba(239, 68, 68, 0.22);
+      background: rgba(239, 68, 68, 0.25);
+      border-color: rgba(239, 68, 68, 0.5);
+    }
+    .btn-refresh-pulse {
+      animation: spinRefresh 0.8s ease;
+    }
+    @keyframes spinRefresh {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
-    /* Mission Hero (Live HD Video Player + Briefing) */
+    /* Live Progress Bar Banner (When scanning in-page) */
+    #cloud-runner-banner {
+      display: none;
+      background: linear-gradient(90deg, rgba(245, 158, 11, 0.15), rgba(56, 189, 248, 0.15));
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.25rem;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      animation: bannerSlide 0.3s ease;
+    }
+    @keyframes bannerSlide {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .banner-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .banner-spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(245, 158, 11, 0.2);
+      border-top-color: var(--accent-gold);
+      border-radius: 50%;
+      animation: spinRefresh 0.7s linear infinite;
+    }
+    .banner-text {
+      font-size: 0.82rem;
+      font-family: var(--font-mono);
+      color: var(--accent-gold-light);
+    }
+
+    /* ========================================================
+       CORE MISSION INTEL HERO (Photos directly integrated!)
+       ======================================================== */
     .mission-hero {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 1.5rem;
-      margin-bottom: 1.75rem;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 1.25rem;
     }
-    @media (max-width: 1024px) {
-      .mission-hero { grid-template-columns: 1fr; gap: 1rem; }
+    @media (max-width: 960px) {
+      .mission-hero { grid-template-columns: 1fr; }
     }
 
-    /* Video Player HUD Container */
+    /* Panel A: Live Surveillance Radar Stream */
     .video-card {
-      background: var(--bg-glass-card);
+      background: var(--bg-card);
       border: 1px solid var(--border-medium);
       border-radius: var(--radius-lg);
-      padding: 1.25rem;
-      position: relative;
-      overflow: hidden;
-      box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      padding: 1.1rem;
       display: flex;
       flex-direction: column;
+      gap: 0.85rem;
+      box-shadow: var(--shadow-card);
+      position: relative;
     }
-    @media (max-width: 480px) {
-      .video-card { padding: 0.85rem; border-radius: var(--radius-md); }
-    }
-    .video-header {
+    .panel-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 0.85rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid var(--border-subtle);
+      gap: 0.75rem;
     }
-    .video-header-left {
+    .panel-header-left {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
     }
     .radar-pulse-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
+      width: 8px;
+      height: 8px;
       background: var(--accent-radar);
-      box-shadow: 0 0 14px var(--accent-radar);
-      animation: pulse-red 2s infinite;
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent-radar);
+      animation: radarFlash 1.5s infinite;
     }
-    @keyframes pulse-red {
-      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-      70% { transform: scale(1.15); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
-      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    @keyframes radarFlash {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.7); }
     }
-    .video-title {
-      font-size: 0.825rem;
-      font-weight: 800;
-      color: #fff;
+    .panel-title {
+      font-size: 0.84rem;
+      font-weight: 700;
       letter-spacing: 0.04em;
       text-transform: uppercase;
       font-family: var(--font-mono);
+      color: var(--text-main);
     }
-    @media (max-width: 480px) {
-      .video-title { font-size: 0.725rem; }
-    }
-    .video-node-tag {
-      font-size: 0.7rem;
-      color: var(--accent-gold-light);
-      background: rgba(245, 158, 11, 0.12);
-      border: 1px solid var(--border-gold);
-      padding: 0.2rem 0.55rem;
-      border-radius: 6px;
+    .panel-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
       font-family: var(--font-mono);
+      padding: 0.15rem 0.5rem;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.3);
     }
-
-    .video-frame-wrapper {
+    .video-frame-wrap {
       position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
       border-radius: var(--radius-md);
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.16);
+      border: 1px solid var(--border-subtle);
       background: #000;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-      aspect-ratio: 16 / 9;
-      width: 100%;
     }
-    .video-frame-wrapper video {
+    .video-frame-wrap video {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -501,169 +572,163 @@
       position: absolute;
       inset: 0;
       pointer-events: none;
-      background: radial-gradient(circle, transparent 50%, rgba(6, 9, 15, 0.45) 95%);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       padding: 0.85rem;
+      background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 25%, transparent 75%, rgba(0,0,0,0.65) 100%);
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: rgba(255, 255, 255, 0.85);
+      letter-spacing: 0.05em;
     }
-    .reticle-top {
+    .reticle-top, .reticle-bottom {
       display: flex;
       justify-content: space-between;
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      color: rgba(255, 255, 255, 0.7);
-    }
-    .reticle-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      color: var(--accent-cyan);
-    }
-    @media (max-width: 480px) {
-      .reticle-top, .reticle-bottom { font-size: 0.575rem; }
+      align-items: center;
     }
     .video-controls {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 0.85rem;
-      padding-top: 0.75rem;
-      border-top: 1px solid var(--border-subtle);
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      font-family: var(--font-mono);
+      gap: 0.5rem;
       flex-wrap: wrap;
-      gap: 0.5rem;
     }
-    .video-btn-group {
+    .video-status-indicator {
       display: flex;
-      gap: 0.5rem;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      color: var(--accent-emerald);
     }
     .video-mini-btn {
-      background: rgba(255, 255, 255, 0.08);
+      padding: 0.3rem 0.65rem;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--border-subtle);
-      color: var(--text-main);
-      padding: 0.35rem 0.75rem;
-      border-radius: 6px;
-      font-size: 0.75rem;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
       cursor: pointer;
       transition: all 0.2s;
-      min-height: 34px;
     }
-    .video-mini-btn:hover, .video-mini-btn:active {
-      background: rgba(255, 255, 255, 0.16);
-      border-color: var(--border-medium);
+    .video-mini-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--text-main);
     }
 
-    /* Briefing Card */
+    /* Panel B: Belfast Regional Command Suite (Using belfast_harbour.jpg as backdrop) */
     .briefing-card {
-      background: var(--bg-glass-card);
+      background: var(--bg-card);
       border: 1px solid var(--border-medium);
       border-radius: var(--radius-lg);
-      padding: 1.5rem;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-card);
+      position: relative;
+    }
+    .briefing-banner {
+      position: relative;
+      width: 100%;
+      height: 140px;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border-subtle);
+      cursor: pointer;
+    }
+    .briefing-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .briefing-banner:hover img { transform: scale(1.04); }
+    .briefing-banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(6, 9, 17, 0.2) 0%, rgba(6, 9, 17, 0.85) 100%);
+      display: flex;
+      align-items: flex-end;
+      padding: 0.85rem 1.1rem;
+    }
+    .briefing-banner-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: var(--accent-gold);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .briefing-body {
+      padding: 1.1rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      position: relative;
+      flex: 1;
+      gap: 1rem;
     }
-    @media (max-width: 480px) {
-      .briefing-card { padding: 1.1rem; border-radius: var(--radius-md); }
-    }
-    .briefing-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.25rem 0.65rem;
-      border-radius: var(--radius-full);
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      color: var(--accent-cyan);
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 0.6rem;
-      font-family: var(--font-mono);
-    }
-    .briefing-title {
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 0.4rem;
-      letter-spacing: -0.01em;
-    }
-    .briefing-desc {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      line-height: 1.5;
-      margin-bottom: 1rem;
-    }
-    .recon-grid {
+    .intel-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.65rem;
-      margin-bottom: 1.25rem;
+      gap: 0.75rem;
     }
-    @media (max-width: 480px) {
-      .recon-grid { grid-template-columns: 1fr; }
-    }
-    .recon-item {
-      background: rgba(255, 255, 255, 0.035);
+    .intel-item {
+      background: rgba(6, 9, 17, 0.6);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
-      padding: 0.65rem 0.85rem;
+      padding: 0.65rem 0.8rem;
     }
-    .recon-label {
+    .intel-label {
       font-size: 0.65rem;
       color: var(--text-muted);
       text-transform: uppercase;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.2rem;
       font-family: var(--font-mono);
+      letter-spacing: 0.06em;
+      margin-bottom: 0.2rem;
     }
-    .recon-value {
-      font-size: 0.85rem;
-      color: #fff;
-      font-weight: 600;
+    .intel-val {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text-main);
       display: flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.35rem;
     }
-    .recon-tag {
+    .intel-val .pill {
       font-size: 0.7rem;
-      padding: 0.15rem 0.5rem;
+      padding: 0.15rem 0.45rem;
       border-radius: 4px;
       font-family: var(--font-mono);
-      font-weight: 700;
     }
-    .tag-target { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid var(--border-radar); }
-    .tag-gold { background: rgba(245, 158, 11, 0.18); color: var(--accent-gold-light); border: 1px solid var(--border-gold); }
+    .pill-gold { background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); border: 1px solid var(--border-gold); }
+    .pill-cyan { background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .pill-green { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border: 1px solid rgba(16, 185, 129, 0.3); }
 
-    /* Visual Reconnaissance Carousel */
-    .recon-gallery-strip {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+    /* Visual Artwork Carousel / Strip */
+    .assets-quick-strip {
+      display: flex;
+      align-items: center;
       gap: 0.6rem;
     }
     .strip-thumb {
-      height: 80px;
-      border-radius: 8px;
+      flex: 1;
+      height: 52px;
+      border-radius: var(--radius-sm);
       overflow: hidden;
-      border: 1px solid var(--border-subtle);
-      position: relative;
+      border: 1px solid var(--border-medium);
       cursor: pointer;
-      transition: transform 0.2s, border-color 0.2s;
+      position: relative;
+      transition: all 0.2s;
     }
-    .strip-thumb:hover, .strip-thumb:active {
-      transform: translateY(-2px);
+    .strip-thumb:hover {
       border-color: var(--accent-gold);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
     }
     .strip-thumb img {
       width: 100%;
@@ -673,189 +738,263 @@
     }
     .strip-tag {
       position: absolute;
-      bottom: 3px;
-      left: 4px;
-      right: 4px;
-      font-size: 0.575rem;
+      bottom: 2px;
+      left: 3px;
+      font-size: 0.58rem;
       font-family: var(--font-mono);
-      background: rgba(0, 0, 0, 0.8);
-      padding: 0.15rem 0.35rem;
+      font-weight: 700;
+      background: rgba(0, 0, 0, 0.75);
+      padding: 1px 4px;
       border-radius: 3px;
       color: #fff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
-    /* KPI Metrics Grid */
+    /* ========================================================
+       KEY METRICS (KPI GRID)
+       ======================================================== */
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1.15rem;
-      margin-bottom: 1.75rem;
+      gap: 1rem;
     }
-    @media (max-width: 980px) {
-      .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+    @media (max-width: 900px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
     }
-    @media (max-width: 480px) {
-      .kpi-grid { grid-template-columns: 1fr 1fr; gap: 0.65rem; }
+    @media (max-width: 500px) {
+      .kpi-grid { grid-template-columns: 1fr; }
     }
     .kpi-card {
-      background: var(--bg-glass-card);
-      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
       border-radius: var(--radius-md);
-      padding: 1.15rem 1.35rem;
-      box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      transition: transform 0.2s ease, border-color 0.2s ease;
-      position: relative;
-      overflow: hidden;
+      padding: 1.15rem 1.25rem;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      transition: border-color 0.2s;
     }
-    @media (max-width: 480px) {
-      .kpi-card { padding: 0.85rem 1rem; }
-    }
-    .kpi-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--border-medium);
-    }
+    .kpi-card:hover { border-color: rgba(255, 255, 255, 0.25); }
     .kpi-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 0.5rem;
     }
     .kpi-title {
-      font-size: 0.725rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
+      font-size: 0.72rem;
       font-family: var(--font-mono);
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
     .kpi-icon { font-size: 1.1rem; }
     .kpi-value {
       font-size: 2.1rem;
       font-weight: 800;
-      color: #fff;
-      line-height: 1;
-      margin-bottom: 0.35rem;
       font-family: var(--font-mono);
+      line-height: 1.1;
+      color: var(--text-main);
     }
-    @media (max-width: 480px) {
-      .kpi-value { font-size: 1.6rem; }
-    }
+    .kpi-value.gold { color: var(--accent-gold); }
+    .kpi-value.emerald { color: var(--accent-emerald); }
+    .kpi-value.cyan { color: var(--accent-cyan); }
     .kpi-meta {
-      font-size: 0.725rem;
-      color: var(--text-secondary);
       display: flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      color: var(--text-muted);
     }
-    .kpi-indicator {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
+    .kpi-dot {
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
-      flex-shrink: 0;
     }
-    .ind-gold { background: var(--accent-gold); box-shadow: 0 0 8px var(--accent-gold); }
-    .ind-radar { background: var(--accent-radar); box-shadow: 0 0 8px var(--accent-radar); }
-    .ind-cyan { background: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan); }
-    .ind-green { background: var(--accent-success); box-shadow: 0 0 8px var(--accent-success); }
+    .dot-gold { background: var(--accent-gold); box-shadow: 0 0 6px var(--accent-gold); }
+    .dot-emerald { background: var(--accent-emerald); box-shadow: 0 0 6px var(--accent-emerald); }
+    .dot-cyan { background: var(--accent-cyan); box-shadow: 0 0 6px var(--accent-cyan); }
 
-    /* Tabs Bar */
+    /* ========================================================
+       TABS & DATA CONTAINERS
+       ======================================================== */
     .tab-bar {
       display: flex;
       align-items: center;
       gap: 0.5rem;
       border-bottom: 1px solid var(--border-subtle);
-      margin-bottom: 1.25rem;
       padding-bottom: 0.5rem;
+      flex-wrap: wrap;
     }
     .tab-btn {
-      background: none;
-      border: none;
-      color: var(--text-secondary);
-      font-family: inherit;
-      font-size: 0.9rem;
-      font-weight: 700;
-      padding: 0.65rem 1.25rem;
+      padding: 0.55rem 1.1rem;
       border-radius: var(--radius-sm);
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 0.84rem;
+      font-weight: 600;
       cursor: pointer;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       gap: 0.5rem;
-      transition: all 0.2s ease;
-      min-height: 42px;
-    }
-    @media (max-width: 480px) {
-      .tab-btn { flex: 1; justify-content: center; padding: 0.5rem; font-size: 0.8rem; }
+      transition: all 0.2s;
     }
     .tab-btn:hover {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
     }
     .tab-btn.active {
-      color: #06090f;
-      background: var(--accent-gold);
-      font-weight: 800;
-      box-shadow: 0 4px 14px var(--accent-gold-glow);
+      background: rgba(245, 158, 11, 0.12);
+      border-color: var(--border-gold);
+      color: var(--accent-gold);
     }
-    .tab-count {
-      font-size: 0.725rem;
-      padding: 0.15rem 0.5rem;
+    .tab-badge {
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      padding: 0.1rem 0.45rem;
       border-radius: var(--radius-full);
       background: rgba(0, 0, 0, 0.3);
-      font-family: var(--font-mono);
-    }
-    .tab-btn.active .tab-count {
-      background: rgba(0, 0, 0, 0.25);
-      color: #06090f;
     }
 
     .tab-pane { display: none; }
     .tab-pane.active { display: block; }
 
-    /* Table Container */
-    .table-container {
-      background: var(--bg-glass-card);
-      border: 1px solid var(--border-subtle);
+    /* ========================================================
+       ACTIVE VACANCIES / RADAR EMPTY STATE (Using belfast_grid.jpg!)
+       ======================================================== */
+    .surveillance-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
       border-radius: var(--radius-lg);
-      overflow-x: auto;
-      box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      position: relative;
     }
+
+    /* Embedded Belfast Grid Radar Screen */
+    .radar-empty-state {
+      position: relative;
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      background: 
+        radial-gradient(circle at center, rgba(6, 9, 17, 0.75) 0%, rgba(6, 9, 17, 0.94) 100%),
+        url('assets/belfast_grid.jpg') center/cover no-repeat;
+    }
+    .radar-sweep-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(16, 185, 129, 0.1);
+      border: 2px solid var(--accent-emerald);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 0 30px var(--accent-emerald-glow);
+      animation: radarPing 2.5s infinite;
+    }
+    @keyframes radarPing {
+      0% { transform: scale(0.95); box-shadow: 0 0 10px var(--accent-emerald); }
+      50% { transform: scale(1.05); box-shadow: 0 0 35px var(--accent-emerald); }
+      100% { transform: scale(0.95); box-shadow: 0 0 10px var(--accent-emerald); }
+    }
+    .radar-empty-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.5rem;
+    }
+    .radar-empty-desc {
+      max-width: 580px;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+    .channel-badges-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      max-width: 720px;
+      margin-bottom: 1.25rem;
+    }
+    .channel-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: var(--radius-full);
+      background: rgba(13, 19, 33, 0.85);
+      border: 1px solid var(--border-medium);
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      color: var(--text-main);
+    }
+    .channel-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent-emerald);
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--accent-emerald);
+    }
+    .radar-timer-pill {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--accent-gold);
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid var(--border-gold);
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-full);
+    }
+
+    /* Vacancies Table */
     .intel-table {
       width: 100%;
       border-collapse: collapse;
       text-align: left;
-      font-size: 0.85rem;
     }
     .intel-table th {
-      padding: 0.95rem 1.25rem;
-      font-size: 0.725rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-      border-bottom: 1px solid var(--border-medium);
-      background: rgba(255, 255, 255, 0.03);
+      padding: 0.9rem 1rem;
+      background: rgba(0, 0, 0, 0.3);
+      font-size: 0.72rem;
       font-family: var(--font-mono);
-      white-space: nowrap;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border-subtle);
     }
     .intel-table td {
-      padding: 1rem 1.25rem;
+      padding: 1rem;
       border-bottom: 1px solid var(--border-subtle);
-      color: var(--text-main);
+      font-size: 0.86rem;
       vertical-align: middle;
     }
-    .intel-table tr:hover td {
+    .intel-table tbody tr:hover {
       background: rgba(255, 255, 255, 0.03);
     }
+    .role-title { font-weight: 700; color: #fff; margin-bottom: 0.2rem; }
+    .role-meta { font-size: 0.75rem; color: var(--text-secondary); font-family: var(--font-mono); }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+    .status-success { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .status-partial { background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); border: 1px solid var(--border-gold); }
 
-    /* Mobile Cards View for Jobs & Runs */
+    /* Mobile Table Responsiveness */
     @media (max-width: 768px) {
       .intel-table thead { display: none; }
       .intel-table, .intel-table tbody, .intel-table tr, .intel-table td {
@@ -864,125 +1003,44 @@
       }
       .intel-table tr {
         margin-bottom: 0.85rem;
-        background: rgba(255, 255, 255, 0.025);
-        border: 1px solid var(--border-subtle);
+        background: rgba(13, 19, 33, 0.9);
+        border: 1px solid var(--border-medium);
         border-radius: var(--radius-md);
-        padding: 0.85rem;
+        padding: 0.75rem;
       }
       .intel-table td {
-        border-bottom: none;
-        padding: 0.35rem 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 0.825rem;
+        padding: 0.45rem 0;
+        border-bottom: 1px dashed var(--border-subtle);
       }
+      .intel-table td:last-child { border-bottom: none; }
       .intel-table td::before {
         content: attr(data-label);
-        font-size: 0.7rem;
         font-family: var(--font-mono);
+        font-size: 0.72rem;
+        color: var(--text-secondary);
+        font-weight: 600;
         text-transform: uppercase;
-        color: var(--text-muted);
-        font-weight: 700;
-        padding-right: 0.5rem;
       }
     }
 
-    /* Clean Empty State */
-    .empty-state {
-      padding: 3rem 1.5rem;
-      text-align: center;
-      background: linear-gradient(180deg, rgba(14, 20, 32, 0.4), rgba(14, 20, 32, 0.85));
-      border: 1px dashed var(--border-medium);
-      border-radius: var(--radius-lg);
-      margin: 1rem 0;
-    }
-    .empty-icon-wrap {
-      width: 72px;
-      height: 72px;
-      margin: 0 auto 1.25rem;
-      border-radius: 20px;
-      background: rgba(245, 158, 11, 0.12);
-      border: 1px solid var(--border-gold);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      box-shadow: var(--shadow-gold);
-    }
-    .empty-title {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 0.5rem;
-    }
-    .empty-desc {
-      color: var(--text-secondary);
-      font-size: 0.875rem;
-      max-width: 580px;
-      margin: 0 auto 1.5rem;
-      line-height: 1.55;
-    }
-    .empty-meta-tags {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    .empty-tag {
-      font-size: 0.725rem;
-      font-family: var(--font-mono);
-      padding: 0.35rem 0.75rem;
-      border-radius: var(--radius-full);
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-secondary);
-    }
-
-    /* Badges */
-    .source-badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.25rem 0.65rem;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      font-family: var(--font-mono);
-    }
-    .badge-reed { background: rgba(239, 68, 68, 0.18); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.35); }
-    .badge-vivid { background: rgba(245, 158, 11, 0.18); color: var(--accent-gold-light); border: 1px solid var(--border-gold); }
-    .badge-linkedin { background: rgba(56, 189, 248, 0.18); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.35); }
-    .badge-nijobs { background: rgba(16, 185, 129, 0.18); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.35); }
-    .badge-generic { background: rgba(255, 255, 255, 0.08); color: var(--text-secondary); border: 1px solid var(--border-subtle); }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      padding: 0.2rem 0.55rem;
-      border-radius: var(--radius-full);
-      font-size: 0.7rem;
-      font-weight: 700;
-      font-family: var(--font-mono);
-      text-transform: uppercase;
-    }
-    .status-success { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }
-    .status-partial { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
-    .status-error { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); }
-
-    /* Modals */
+    /* ========================================================
+       MODALS (Settings, Remote Cloud Dispatch, Lightbox)
+       ======================================================== */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(6, 9, 15, 0.85);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      z-index: 4000;
+      background: rgba(6, 9, 17, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 1.25rem;
-      z-index: 3000;
-      transition: opacity 0.25s ease, visibility 0.25s ease;
+      transition: opacity 0.25s, visibility 0.25s;
     }
     .modal-overlay.hidden {
       opacity: 0;
@@ -990,111 +1048,147 @@
       pointer-events: none;
     }
     .modal-card {
-      background: var(--bg-glass-elevated);
+      width: 100%;
+      max-width: 520px;
+      background: var(--bg-card);
       border: 1px solid var(--border-medium);
       border-radius: var(--radius-lg);
-      padding: 1.75rem;
-      max-width: 520px;
-      width: 100%;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.85);
+      padding: 2rem;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9);
       position: relative;
-      max-height: 90vh;
-      overflow-y: auto;
     }
     .modal-header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.25rem;
+      justify-content: space-between;
+      margin-bottom: 1rem;
     }
     .modal-title {
       font-size: 1.2rem;
       font-weight: 800;
-      color: #fff;
     }
     .modal-close {
       background: none;
       border: none;
-      color: var(--text-muted);
-      font-size: 1.75rem;
+      color: var(--text-secondary);
+      font-size: 1.5rem;
       cursor: pointer;
       line-height: 1;
     }
     .modal-close:hover { color: #fff; }
+    .modal-desc {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
+    }
 
     /* Lightbox Modal */
     #lightbox-modal .modal-card {
-      max-width: 950px;
+      max-width: 960px;
       padding: 0.75rem;
-      background: #000;
+      background: rgba(6, 9, 17, 0.95);
     }
     #lightbox-img {
       width: 100%;
-      height: auto;
+      max-height: 80vh;
+      object-fit: contain;
       border-radius: var(--radius-md);
       display: block;
     }
 
+    /* Toast Notification */
+    #toast-notification {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 5000;
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-sm);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-gold);
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+    #toast-notification.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
     /* Footer */
     .app-footer {
-      margin-top: 3rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      font-size: 0.775rem;
+      font-size: 0.72rem;
       color: var(--text-muted);
       font-family: var(--font-mono);
-    }
-    @media (max-width: 768px) {
-      .app-footer { flex-direction: column; text-align: center; }
+      padding: 1rem 0 0;
+      border-top: 1px solid var(--border-subtle);
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
   </style>
 </head>
 <body>
 
-  <!-- Ambient Living Video & Imagery Background (Visible across Login & Dashboard) -->
+  <!-- Ambient Living HD Video & Imagery Layer -->
   <div class="ambient-bg-layer">
     <video class="ambient-video" id="bg-video" autoplay loop muted playsinline poster="assets/hero_hq.jpg">
       <source src="assets/gemini_hd.mp4" type="video/mp4">
-      <source src="animation.gif.mp4" type="video/mp4">
     </video>
     <div class="ambient-overlay"></div>
   </div>
 
-  <!-- Secure Login Overlay Gate -->
+  <!-- ========================================================
+       SECURE LOGIN GATE (No password hints, SHA-256 verification)
+       ======================================================== -->
   <div id="login-overlay">
-    <div class="login-box">
+    <div class="login-card">
       <div class="login-avatar-ring">
         <img src="assets/brian_avatar.jpg" alt="Budget Brian Avatar">
       </div>
       <div class="login-badge">Mission Control Node</div>
       <h1 class="login-title">Budget Brian</h1>
-      <p class="login-subtitle">Vivid Healthcare Job Watcher • Belfast & Northern Ireland Executive Portal</p>
+      <p class="login-subtitle">Vivid Healthcare Intelligence Portal • Belfast & Northern Ireland</p>
 
       <form id="login-form" onsubmit="handleLogin(event)">
-        <div id="login-error-msg" style="display:none; color:#fca5a5; background:rgba(239,68,68,0.22); border:1px solid rgba(239,68,68,0.4); border-radius:6px; padding:0.65rem 0.85rem; font-size:0.8rem; margin-bottom:1rem; font-family:var(--font-mono); text-align:left;"></div>
+        <div id="login-error-msg" class="login-error"></div>
         
-        <div class="form-group">
+        <div class="password-field-wrap">
           <label class="form-label" for="login-password">Authorization Passcode</label>
-          <input type="password" id="login-password" class="form-input" placeholder="Enter authorization key..." autocomplete="current-password" autofocus required>
+          <div class="form-input-wrap">
+            <input type="password" id="login-password" class="form-input" placeholder="Enter authorization key..." autocomplete="current-password" autofocus required>
+            <button type="button" class="toggle-pwd-btn" onclick="togglePasswordVisibility('login-password')">👁️</button>
+          </div>
         </div>
+
         <button type="submit" class="login-btn">
           <span>Authorize Access</span>
           <span>→</span>
         </button>
       </form>
 
-      <div class="login-hint">
-        Default passcode: <code>vivid2026</code> (Configurable inside settings)
+      <div class="login-security-tag">
+        <span>🛡️</span>
+        <span>SHA-256 Client-Gated Authentication</span>
       </div>
     </div>
   </div>
 
-  <!-- Main Authenticated App -->
+  <!-- ========================================================
+       MAIN AUTHENTICATED DASHBOARD
+       ======================================================== -->
   <div id="dashboard-app" class="app-layout" style="display: none;">
 
     <!-- Top Navigation Bar -->
@@ -1106,48 +1200,62 @@
         <div class="brand-meta">
           <div class="brand-title-wrap">
             <h1 class="brand-title">Budget Brian</h1>
-            <span class="brand-status-pill">Target Locked</span>
+            <span class="brand-status-pill">Monitoring Active</span>
           </div>
-          <span class="brand-subtitle">Vivid Healthcare Intelligence • Belfast Regional Node</span>
+          <span class="brand-subtitle">Vivid Healthcare Intelligence Node • Belfast / NI</span>
         </div>
       </div>
 
       <div class="nav-actions">
-        <button class="btn btn-gold" onclick="triggerManualScan()">
-          <span>⚡</span>
-          <span>Refresh Scan</span>
+        <!-- In-Page Refresh (Zero GitHub Redirect!) -->
+        <button class="btn btn-gold" id="btn-refresh" onclick="triggerInPageRefresh()">
+          <span id="refresh-icon">⚡</span>
+          <span id="refresh-text">Refresh Research</span>
         </button>
-        <button class="btn btn-secondary" onclick="openGalleryModal()">
+
+        <button class="btn btn-secondary" onclick="openSettingsModal()">
+          <span>⚙️</span>
+          <span>Settings</span>
+        </button>
+
+        <button class="btn btn-secondary" onclick="openLightbox('assets/hero_hq.jpg')">
           <span>🖼️</span>
-          <span>Recon Intel</span>
+          <span>Operations HQ</span>
         </button>
-        <button class="btn btn-secondary" onclick="openPasswordModal()">
-          <span>🔑</span>
-          <span>Passcode</span>
-        </button>
+
         <button class="btn btn-danger" onclick="handleLogout()">
           <span>Sign Out</span>
         </button>
       </div>
     </header>
 
-    <!-- Mission Control Hero & Live Video Feed -->
+    <!-- In-Page Cloud Scanner Live Progress Banner -->
+    <div id="cloud-runner-banner">
+      <div class="banner-left">
+        <div class="banner-spinner"></div>
+        <span class="banner-text" id="runner-banner-text">Cloud Scanner Dispatched • Polling execution status...</span>
+      </div>
+      <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-gold);" id="runner-banner-timer">0s elapsed</span>
+    </div>
+
+    <!-- ========================================================
+         MISSION INTEL HERO (Photos directly integrated!)
+         ======================================================== -->
     <section class="mission-hero">
       
-      <!-- Live Video Recon Stream -->
+      <!-- Panel A: Live Video Surveillance Radar Stream -->
       <div class="video-card">
-        <div class="video-header">
-          <div class="video-header-left">
+        <div class="panel-header">
+          <div class="panel-header-left">
             <span class="radar-pulse-dot"></span>
-            <span class="video-title">Live Target Stream • Radar Reconnaissance</span>
+            <span class="panel-title">Target Stream • Radar Surveillance</span>
           </div>
-          <span class="video-node-tag">HD 720p</span>
+          <span class="panel-tag">HD 720p Feed</span>
         </div>
 
-        <div class="video-frame-wrapper">
+        <div class="video-frame-wrap">
           <video id="mission-video" autoplay loop muted playsinline poster="assets/hero_hq.jpg">
             <source src="assets/gemini_hd.mp4" type="video/mp4">
-            <source src="animation.gif.mp4" type="video/mp4">
           </video>
           <div class="video-reticle-overlay">
             <div class="reticle-top">
@@ -1156,89 +1264,105 @@
             </div>
             <div class="reticle-bottom">
               <span>ROLE: REGISTERED MANAGER (CARE)</span>
-              <span>STATUS: CONTINUOUS CLOUD SWEEP</span>
+              <span id="hud-clock">00:00:00 UTC</span>
             </div>
           </div>
         </div>
 
         <div class="video-controls">
-          <div class="video-status-text">
-            <span>● 24/7 Autonomous Scanner Active</span>
+          <div class="video-status-indicator">
+            <span>● 24/7 Autonomous Cloud Scanner Active</span>
           </div>
-          <div class="video-btn-group">
+          <div style="display: flex; gap: 0.4rem;">
             <button class="video-mini-btn" id="btn-toggle-play" onclick="toggleVideoPlay()">Pause</button>
             <button class="video-mini-btn" id="btn-toggle-sound" onclick="toggleVideoSound()">Unmute</button>
-            <button class="video-mini-btn" onclick="openVideoModal()">Expand</button>
+            <button class="video-mini-btn" onclick="openLightbox('assets/hero_hq.jpg')">Enlarge</button>
           </div>
         </div>
       </div>
 
-      <!-- Intelligence Mission Briefing -->
+      <!-- Panel B: Belfast Regional Reconnaissance (Harbour photo directly embedded) -->
       <div class="briefing-card">
-        <div>
-          <div class="briefing-badge">Autonomous Objective</div>
-          <h2 class="briefing-title">Target Job Parameters</h2>
-          <p class="briefing-desc">
-            Direct real-time monitoring across 9 verified UK/NI recruitment endpoints for <strong>Registered Manager</strong> positions specifically connected to <strong>Vivid Healthcare Limited</strong>.
-          </p>
-
-          <div class="recon-grid">
-            <div class="recon-item">
-              <div class="recon-label">Target Employer</div>
-              <div class="recon-value">
-                <span class="recon-tag tag-target">Vivid Healthcare Search</span>
-              </div>
-            </div>
-            <div class="recon-item">
-              <div class="recon-label">Target Location</div>
-              <div class="recon-value">
-                <span class="recon-tag tag-gold">Belfast / Northern Ireland</span>
-              </div>
-            </div>
-            <div class="recon-item">
-              <div class="recon-label">Cloud Frequency</div>
-              <div class="recon-value">Every 1 Hour (Automated)</div>
-            </div>
-            <div class="recon-item">
-              <div class="recon-label">Verified Sources</div>
-              <div class="recon-value" id="briefing-sources-count">9 Sources Active</div>
+        <div class="briefing-banner" onclick="openLightbox('assets/belfast_harbour.jpg')">
+          <img src="assets/belfast_harbour.jpg" alt="Belfast Harbour Command Suite">
+          <div class="briefing-banner-overlay">
+            <div class="briefing-banner-title">
+              <span>📍</span>
+              <span>Belfast Regional Sector • Surveillance Node</span>
             </div>
           </div>
         </div>
 
-        <!-- Recon Visuals Strip -->
-        <div>
-          <div class="recon-label" style="margin-bottom: 0.4rem;">High-Resolution Intelligence Assets</div>
-          <div class="recon-gallery-strip">
-            <div class="strip-thumb" onclick="openLightbox('assets/belfast_harbour.jpg')">
-              <img src="assets/belfast_harbour.jpg" alt="Belfast Harbour Intel">
-              <span class="strip-tag">Belfast Harbour</span>
+        <div class="briefing-body">
+          <div class="intel-grid">
+            <div class="intel-item">
+              <div class="intel-label">Target Organization</div>
+              <div class="intel-val">
+                <span class="pill pill-gold">Vivid Healthcare Search</span>
+              </div>
             </div>
-            <div class="strip-thumb" onclick="openLightbox('assets/belfast_grid.jpg')">
-              <img src="assets/belfast_grid.jpg" alt="Belfast Grid">
-              <span class="strip-tag">Surveillance Grid</span>
+
+            <div class="intel-item">
+              <div class="intel-label">Monitored Role</div>
+              <div class="intel-val">Registered Manager</div>
             </div>
-            <div class="strip-thumb" onclick="openLightbox('assets/mobile_brian.jpg')">
-              <img src="assets/mobile_brian.jpg" alt="Mobile Recon">
-              <span class="strip-tag">Mobile Feed</span>
+
+            <div class="intel-item">
+              <div class="intel-label">Territory & Framework</div>
+              <div class="intel-val">
+                <span class="pill pill-cyan">Belfast / Northern Ireland (RQIA)</span>
+              </div>
+            </div>
+
+            <div class="intel-item">
+              <div class="intel-label">Automated Frequency</div>
+              <div class="intel-val">
+                <span class="pill pill-green">Hourly Cloud Sweep</span>
+              </div>
             </div>
           </div>
+
+          <!-- Integrated Visual Asset Quick Strip -->
+          <div>
+            <div class="intel-label" style="margin-bottom: 0.35rem;">High-Resolution Intelligence Assets</div>
+            <div class="assets-quick-strip">
+              <div class="strip-thumb" onclick="openLightbox('assets/belfast_harbour.jpg')">
+                <img src="assets/belfast_harbour.jpg" alt="Harbour">
+                <span class="strip-tag">Harbour Suite</span>
+              </div>
+              <div class="strip-thumb" onclick="openLightbox('assets/belfast_grid.jpg')">
+                <img src="assets/belfast_grid.jpg" alt="Surveillance Grid">
+                <span class="strip-tag">Radar Grid</span>
+              </div>
+              <div class="strip-thumb" onclick="openLightbox('assets/mobile_brian.jpg')">
+                <img src="assets/mobile_brian.jpg" alt="Mobile Recon">
+                <span class="strip-tag">Mobile Officer</span>
+              </div>
+              <div class="strip-thumb" onclick="openLightbox('assets/hero_hq.jpg')">
+                <img src="assets/hero_hq.jpg" alt="HQ">
+                <span class="strip-tag">Mission HQ</span>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
     </section>
 
-    <!-- Key Performance Metrics (KPI Grid) -->
+    <!-- ========================================================
+         KEY METRICS (KPI GRID)
+         ======================================================== -->
     <section class="kpi-grid">
       <div class="kpi-card">
         <div class="kpi-header">
           <span class="kpi-title">Active Vacancies</span>
           <span class="kpi-icon">🎯</span>
         </div>
-        <div class="kpi-value" id="kpi-total-jobs">0</div>
+        <div class="kpi-value gold" id="kpi-total-jobs">0</div>
         <div class="kpi-meta">
-          <span class="kpi-indicator ind-gold"></span>
-          <span>Verified active matching roles</span>
+          <span class="kpi-dot dot-gold"></span>
+          <span>Verified active matching listings</span>
         </div>
       </div>
 
@@ -1247,54 +1371,56 @@
           <span class="kpi-title">High-Relevance Matches</span>
           <span class="kpi-icon">🔥</span>
         </div>
-        <div class="kpi-value" id="kpi-strong-matches">0</div>
+        <div class="kpi-value cyan" id="kpi-strong-matches">0</div>
         <div class="kpi-meta">
-          <span class="kpi-indicator ind-radar"></span>
-          <span>Score ≥ 85% (Title + Org + NI)</span>
+          <span class="kpi-dot dot-cyan"></span>
+          <span>Strict Registered Manager + NI</span>
         </div>
       </div>
 
       <div class="kpi-card">
         <div class="kpi-header">
-          <span class="kpi-title">Sources Monitored</span>
+          <span class="kpi-title">Monitored Endpoints</span>
           <span class="kpi-icon">📡</span>
         </div>
-        <div class="kpi-value" id="kpi-sources-count">9/9</div>
+        <div class="kpi-value emerald" id="kpi-sources-count">9/9</div>
         <div class="kpi-meta">
-          <span class="kpi-indicator ind-green"></span>
-          <span>Reed, NIJobs, Vivid, LinkedIn, Totaljobs...</span>
+          <span class="kpi-dot dot-emerald"></span>
+          <span>NIJobs, Reed, Indeed, LinkedIn, Totaljobs...</span>
         </div>
       </div>
 
       <div class="kpi-card">
         <div class="kpi-header">
-          <span class="kpi-title">Last Scan Latency</span>
+          <span class="kpi-title">Cloud Execution Latency</span>
           <span class="kpi-icon">⚡</span>
         </div>
         <div class="kpi-value" id="kpi-scan-duration">3.58s</div>
         <div class="kpi-meta">
-          <span class="kpi-indicator ind-cyan"></span>
+          <span class="kpi-dot dot-gold"></span>
           <span id="val-last-scan">Last synced: Recent</span>
         </div>
       </div>
     </section>
 
-    <!-- Main Tabs -->
+    <!-- ========================================================
+       TABS & CONTENT PANES
+       ======================================================== -->
     <nav class="tab-bar">
       <button class="tab-btn active" id="tab-btn-jobs" onclick="switchTab('jobs')">
         <span>Active Vacancies</span>
-        <span class="tab-count" id="tab-jobs-count">0</span>
+        <span class="tab-badge" id="tab-jobs-count">0</span>
       </button>
       <button class="tab-btn" id="tab-btn-runs" onclick="switchTab('runs')">
-        <span>Hourly Cloud Runs</span>
-        <span class="tab-count" id="tab-runs-count">0</span>
+        <span>Cloud Execution Audit Log</span>
+        <span class="tab-badge" id="tab-runs-count">0</span>
       </button>
     </nav>
 
     <!-- TAB 1: Active Vacancies -->
     <div id="pane-jobs" class="tab-pane active">
-      <div id="jobs-container" class="table-container">
-        <table class="intel-table" id="jobs-table">
+      <div class="surveillance-card">
+        <table class="intel-table" id="jobs-table" style="display: none;">
           <thead>
             <tr>
               <th>Role Title</th>
@@ -1311,36 +1437,46 @@
           </tbody>
         </table>
 
-        <!-- Clean Zero-Noise Empty State -->
-        <div id="jobs-empty" class="empty-state" style="display: none;">
-          <div class="empty-icon-wrap">🛡️</div>
-          <h3 class="empty-title">No Active Vacancies Detected Right Now</h3>
-          <p class="empty-desc">
-            All 9 recruitment sources were scanned directly in the cloud. Currently, <strong>Vivid Healthcare Limited / Vivid Healthcare Search Limited</strong> has <strong>0</strong> active public job advertisements for <strong>Registered Manager</strong> roles located in <strong>Northern Ireland</strong>.
+        <!-- Radar Tactical Empty State (Embedding belfast_grid.jpg directly!) -->
+        <div id="jobs-empty" class="radar-empty-state">
+          <div class="radar-sweep-icon">🛡️</div>
+          <h3 class="radar-empty-title">Zero Active Vacancies Detected</h3>
+          <p class="radar-empty-desc">
+            All 9 recruitment endpoints scanned autonomously. <strong>Vivid Healthcare</strong> currently has no active public postings for <strong>Registered Manager</strong> positions in <strong>Northern Ireland</strong>.
           </p>
-          <div class="empty-meta-tags">
-            <span class="empty-tag">✓ Zero Third-Party Retail Noise</span>
-            <span class="empty-tag">✓ Dead URLs & Expired Cache Rejected</span>
-            <span class="empty-tag">✓ Strict Northern Ireland Boundaries Enforced</span>
-            <span class="empty-tag">✓ Next Cloud Run In < 1 Hour</span>
+
+          <div class="channel-badges-grid">
+            <span class="channel-badge"><span class="channel-dot"></span>NIJobs.com</span>
+            <span class="channel-badge"><span class="channel-dot"></span>Indeed UK</span>
+            <span class="channel-badge"><span class="channel-dot"></span>Reed Profile</span>
+            <span class="channel-badge"><span class="channel-dot"></span>CV-Library</span>
+            <span class="channel-badge"><span class="channel-dot"></span>Totaljobs</span>
+            <span class="channel-badge"><span class="channel-dot"></span>LinkedIn Jobs</span>
+            <span class="channel-badge"><span class="channel-dot"></span>Vivid Healthcare Official</span>
+            <span class="channel-badge"><span class="channel-dot"></span>Glassdoor UK</span>
+            <span class="channel-badge"><span class="channel-dot"></span>NHS Jobs HSC</span>
+          </div>
+
+          <div class="radar-timer-pill" id="next-scan-ticker">
+            Next Autonomous Cloud Sweep: Scheduled within < 1h
           </div>
         </div>
       </div>
     </div>
 
-    <!-- TAB 2: Hourly Cloud Runs History -->
+    <!-- TAB 2: Hourly Cloud Audit Runs History -->
     <div id="pane-runs" class="tab-pane">
-      <div class="table-container">
+      <div class="surveillance-card">
         <table class="intel-table">
           <thead>
             <tr>
               <th>Run ID</th>
-              <th>Started (UTC)</th>
+              <th>Execution Time (UTC)</th>
               <th>Duration</th>
               <th>Status</th>
               <th>Listings Found</th>
-              <th>New</th>
-              <th>Sources Breakdown</th>
+              <th>New Matches</th>
+              <th>Endpoints Status</th>
             </tr>
           </thead>
           <tbody id="runs-tbody">
@@ -1353,99 +1489,132 @@
     <!-- Footer -->
     <footer class="app-footer">
       <div>
-        <span>Budget Brian Intelligence Node • Powered 100% Serverless on GitHub Actions & Pages</span>
+        <span>Budget Brian Intelligence Suite • 100% Serverless Cloud on GitHub Actions</span>
       </div>
       <div>
-        <span>100% Mobile & Desktop Compatible • 24/7 Autonomous Cloud Execution</span>
+        <span>Belfast Regional Node • SHA-256 Protected</span>
       </div>
     </footer>
 
   </div>
 
-  <!-- Password Change Modal -->
-  <div id="password-modal" class="modal-overlay hidden">
+  <!-- ========================================================
+       SETTINGS MODAL (Passcode update & In-Page GitHub Trigger)
+       ======================================================== -->
+  <div id="settings-modal" class="modal-overlay hidden">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 class="modal-title">Update Authorization Passcode</h3>
-        <button class="modal-close" onclick="closePasswordModal()">&times;</button>
+        <h3 class="modal-title">Intelligence Suite Settings</h3>
+        <button class="modal-close" onclick="closeSettingsModal()">&times;</button>
       </div>
-      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
-        Set a personalized authorization key for your browser session.
-      </p>
-      <div class="form-group">
-        <label class="form-label" for="new-passcode">New Passcode</label>
-        <input type="password" id="new-passcode" class="form-input" placeholder="Enter new passcode (min 4 chars)...">
+
+      <!-- Passcode Customization -->
+      <div style="margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-subtle);">
+        <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.4rem;">🔑 Update Authorization Passcode</h4>
+        <p class="modal-desc">
+          Customize your access key. Passcode is securely hashed with SHA-256 in your browser.
+        </p>
+        <div class="password-field-wrap">
+          <label class="form-label" for="new-passcode">New Passcode</label>
+          <div class="form-input-wrap">
+            <input type="password" id="new-passcode" class="form-input" placeholder="Enter new passcode (min 4 chars)...">
+            <button type="button" class="toggle-pwd-btn" onclick="togglePasswordVisibility('new-passcode')">👁️</button>
+          </div>
+        </div>
+        <button class="btn btn-gold" onclick="saveNewPassword()" style="width: 100%; justify-content: center;">
+          Save New Passcode
+        </button>
       </div>
-      <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
-        <button class="btn btn-secondary" onclick="closePasswordModal()">Cancel</button>
-        <button class="btn btn-gold" onclick="saveNewPassword()">Save Passcode</button>
+
+      <!-- Remote Cloud Trigger Token (Optional for 1-click in-page runner) -->
+      <div>
+        <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.4rem;">⚡ Direct Cloud Scraper Trigger</h4>
+        <p class="modal-desc">
+          To launch a fresh scraper run in GitHub Actions directly from this button without leaving the page, save your GitHub Personal Access Token (PAT). It is stored privately in your browser's local storage.
+        </p>
+        <div class="password-field-wrap">
+          <label class="form-label" for="github-pat">GitHub PAT (Optional)</label>
+          <div class="form-input-wrap">
+            <input type="password" id="github-pat" class="form-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+            <button type="button" class="toggle-pwd-btn" onclick="togglePasswordVisibility('github-pat')">👁️</button>
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-gold" onclick="saveGitHubPat()" style="flex: 1; justify-content: center;">
+            Save Token
+          </button>
+          <button class="btn btn-secondary" onclick="clearGitHubPat()">
+            Clear
+          </button>
+        </div>
       </div>
+
     </div>
   </div>
 
-  <!-- Recon Gallery Modal -->
-  <div id="gallery-modal" class="modal-overlay hidden">
-    <div class="modal-card" style="max-width: 900px;">
-      <div class="modal-header">
-        <h3 class="modal-title">Belfast Reconnaissance Intelligence Gallery</h3>
-        <button class="modal-close" onclick="closeGalleryModal()">&times;</button>
-      </div>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
-        <div style="border-radius: 12px; overflow: hidden; border: 1px solid var(--border-medium); cursor: pointer;" onclick="openLightbox('assets/belfast_harbour.jpg')">
-          <img src="assets/belfast_harbour.jpg" alt="Belfast Harbour Intel" style="width: 100%; height: 160px; object-fit: cover; display: block;">
-          <div style="padding: 0.65rem 0.85rem; background: var(--bg-glass-elevated); font-size: 0.8rem; font-weight: 700;">
-            Belfast Harbour Command Suite
-          </div>
-        </div>
-        <div style="border-radius: 12px; overflow: hidden; border: 1px solid var(--border-medium); cursor: pointer;" onclick="openLightbox('assets/belfast_grid.jpg')">
-          <img src="assets/belfast_grid.jpg" alt="Belfast Grid" style="width: 100%; height: 160px; object-fit: cover; display: block;">
-          <div style="padding: 0.65rem 0.85rem; background: var(--bg-glass-elevated); font-size: 0.8rem; font-weight: 700;">
-            Northern Ireland Regional Radar Grid
-          </div>
-        </div>
-        <div style="border-radius: 12px; overflow: hidden; border: 1px solid var(--border-medium); cursor: pointer;" onclick="openLightbox('assets/hero_hq.jpg')">
-          <img src="assets/hero_hq.jpg" alt="Mission Control" style="width: 100%; height: 160px; object-fit: cover; display: block;">
-          <div style="padding: 0.65rem 0.85rem; background: var(--bg-glass-elevated); font-size: 0.8rem; font-weight: 700;">
-            Budget Brian Multi-Screen Telemetry
-          </div>
-        </div>
-        <div style="border-radius: 12px; overflow: hidden; border: 1px solid var(--border-medium); cursor: pointer;" onclick="openLightbox('assets/mobile_brian.jpg')">
-          <img src="assets/mobile_brian.jpg" alt="Mobile Feed" style="width: 100%; height: 160px; object-fit: cover; display: block;">
-          <div style="padding: 0.65rem 0.85rem; background: var(--bg-glass-elevated); font-size: 0.8rem; font-weight: 700;">
-            Mobile Executive Surveillance Feed
-          </div>
-        </div>
-      </div>
-      <div style="text-align: right;">
-        <button class="btn btn-secondary" onclick="closeGalleryModal()">Close</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Lightbox Modal -->
+  <!-- Lightbox Modal (For inspecting full-res intelligence photos) -->
   <div id="lightbox-modal" class="modal-overlay hidden" onclick="closeLightbox()">
-    <div class="modal-card">
-      <img id="lightbox-img" src="" alt="Enlarged Recon">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div style="display: flex; justify-content: flex-end; margin-bottom: 0.5rem;">
+        <button class="modal-close" onclick="closeLightbox()">&times;</button>
+      </div>
+      <img id="lightbox-img" src="" alt="High Resolution Intel">
     </div>
   </div>
 
+  <!-- Toast Notification -->
+  <div id="toast-notification">
+    <span id="toast-icon">⚡</span>
+    <span id="toast-msg">Research data synchronized live.</span>
+  </div>
+
+  <!-- ========================================================
+       JAVASCRIPT LOGIC
+       ======================================================== -->
   <script>
-    const DEFAULT_PASSCODE = "vivid2026";
+    // Cryptographic SHA-256 Authorization Hash
+    // Zero plaintext credentials stored in client code
+    const DEFAULT_PASSCODE_HASH = "42307681dddc9f3f4daeb51991eecb835a4d69793cefd856aeb34103f775baa5";
 
     let allJobs = [];
     let allRuns = [];
+    let pollingInterval = null;
 
-    function checkPasscode(entered) {
+    // Cryptographic SHA-256 function
+    async function computeSha256(text) {
+      if (!text) return "";
+      const msgBuffer = new TextEncoder().encode(text.trim());
+      const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    // Passcode Verification
+    async function verifyPasscode(entered) {
       if (!entered) return false;
-      const clean = entered.trim();
-      const customPass = localStorage.getItem("vivid_custom_passcode");
-      if (customPass && clean === customPass) return true;
-      if (clean.toLowerCase() === DEFAULT_PASSCODE.toLowerCase()) return true;
+      const enteredHash = await computeSha256(entered);
+      const customHash = localStorage.getItem("vivid_custom_hash");
+      if (customHash && enteredHash === customHash) return true;
+      if (enteredHash === DEFAULT_PASSCODE_HASH) return true;
       return false;
     }
 
-    // Authentication Init
+    // Toggle Password Visibility
+    function togglePasswordVisibility(inputId) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      input.type = input.type === "password" ? "text" : "password";
+    }
+
+    // Initialize Auth Gate
     document.addEventListener("DOMContentLoaded", () => {
+      // Live HUD Clock
+      setInterval(() => {
+        const now = new Date();
+        const clockEl = document.getElementById("hud-clock");
+        if (clockEl) clockEl.textContent = now.toUTCString().slice(17, 25) + " UTC";
+      }, 1000);
+
       const isAuth = localStorage.getItem("vivid_auth_session");
       if (isAuth === "authenticated") {
         unlockDashboard();
@@ -1460,22 +1629,22 @@
       }
     });
 
-    function handleLogin(e) {
+    // Handle Login Submit
+    async function handleLogin(e) {
       if (e) e.preventDefault();
       const input = document.getElementById("login-password");
       const errorMsg = document.getElementById("login-error-msg");
       const entered = input.value.trim();
 
-      if (checkPasscode(entered)) {
+      const isValid = await verifyPasscode(entered);
+      if (isValid) {
         localStorage.setItem("vivid_auth_session", "authenticated");
         if (errorMsg) errorMsg.style.display = "none";
         unlockDashboard();
       } else {
         if (errorMsg) {
-          errorMsg.innerHTML = "⚠️ <strong>Incorrect passcode.</strong> Please enter <code>vivid2026</code>";
+          errorMsg.innerHTML = "⛔ <strong>Access Denied:</strong> Invalid authorization passcode.";
           errorMsg.style.display = "block";
-        } else {
-          alert("Incorrect passcode. Please enter: vivid2026");
         }
         input.select();
         input.focus();
@@ -1487,7 +1656,7 @@
       overlay.classList.add("hidden");
       overlay.style.display = "none";
       const app = document.getElementById("dashboard-app");
-      app.style.display = "block";
+      app.style.display = "flex";
       loadDashboardData();
     }
 
@@ -1504,36 +1673,51 @@
       document.getElementById("dashboard-app").style.display = "none";
     }
 
-    function openPasswordModal() {
-      document.getElementById("password-modal").classList.remove("hidden");
-      document.getElementById("new-passcode").focus();
+    // Settings Modal
+    function openSettingsModal() {
+      const modal = document.getElementById("settings-modal");
+      modal.classList.remove("hidden");
+      const pat = localStorage.getItem("github_pat") || "";
+      const patInput = document.getElementById("github-pat");
+      if (patInput) patInput.value = pat;
     }
 
-    function closePasswordModal() {
-      document.getElementById("password-modal").classList.add("hidden");
-      document.getElementById("new-passcode").value = "";
+    function closeSettingsModal() {
+      document.getElementById("settings-modal").classList.add("hidden");
     }
 
-    function saveNewPassword() {
+    async function saveNewPassword() {
       const newPass = document.getElementById("new-passcode").value.trim();
       if (!newPass || newPass.length < 4) {
         alert("Passcode must be at least 4 characters long.");
         return;
       }
-      localStorage.setItem("vivid_custom_passcode", newPass);
+      const hash = await computeSha256(newPass);
+      localStorage.setItem("vivid_custom_hash", hash);
       localStorage.setItem("vivid_auth_session", "authenticated");
-      alert("Authorization passcode updated successfully!");
-      closePasswordModal();
+      showToast("🔑 Authorization passcode updated successfully!");
+      document.getElementById("new-passcode").value = "";
+      closeSettingsModal();
     }
 
-    function openGalleryModal() {
-      document.getElementById("gallery-modal").classList.remove("hidden");
+    function saveGitHubPat() {
+      const pat = document.getElementById("github-pat").value.trim();
+      if (!pat) {
+        alert("Please enter a valid GitHub token.");
+        return;
+      }
+      localStorage.setItem("github_pat", pat);
+      showToast("⚡ GitHub token saved! 1-Click cloud trigger active.");
+      closeSettingsModal();
     }
 
-    function closeGalleryModal() {
-      document.getElementById("gallery-modal").classList.add("hidden");
+    function clearGitHubPat() {
+      localStorage.removeItem("github_pat");
+      document.getElementById("github-pat").value = "";
+      showToast("GitHub token removed.");
     }
 
+    // Lightbox Viewer
     function openLightbox(src) {
       document.getElementById("lightbox-img").src = src;
       document.getElementById("lightbox-modal").classList.remove("hidden");
@@ -1568,12 +1752,14 @@
       }
     }
 
-    function openVideoModal() {
-      const v = document.getElementById("mission-video");
-      if (v.requestFullscreen) {
-        v.requestFullscreen();
-      } else if (v.webkitRequestFullscreen) {
-        v.webkitRequestFullscreen();
+    // Toast Function
+    function showToast(msg) {
+      const toast = document.getElementById("toast-notification");
+      const msgEl = document.getElementById("toast-msg");
+      if (toast && msgEl) {
+        msgEl.textContent = msg;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 3500);
       }
     }
 
@@ -1581,101 +1767,209 @@
     function switchTab(tab) {
       document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
       document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
-
-      document.getElementById("tab-btn-" + tab).classList.add("active");
-      document.getElementById("pane-" + tab).classList.add("active");
+      const btn = document.getElementById("tab-btn-" + tab);
+      const pane = document.getElementById("pane-" + tab);
+      if (btn) btn.classList.add("active");
+      if (pane) pane.classList.add("active");
     }
 
-    // Manual Scan Trigger
-    function triggerManualScan() {
-      const confirmed = confirm("Open GitHub Actions to manually trigger an immediate cloud scan across all 9 endpoints?");
-      if (confirmed) {
-        window.open("https://github.com/mwjouini/budget-brian/actions/workflows/watcher.yml", "_blank");
+    // ========================================================
+    // IN-PAGE REFRESH (Zero GitHub Redirect!)
+    // ========================================================
+    async function triggerInPageRefresh() {
+      const refreshBtn = document.getElementById("btn-refresh");
+      const refreshIcon = document.getElementById("refresh-icon");
+      const refreshText = document.getElementById("refresh-text");
+      
+      refreshIcon.classList.add("btn-refresh-pulse");
+      refreshText.textContent = "Syncing Data...";
+
+      // Check if user has configured a GitHub PAT for remote cloud trigger
+      const pat = localStorage.getItem("github_pat");
+
+      if (pat) {
+        // Trigger GitHub Actions Workflow Dispatch directly from browser!
+        try {
+          showCloudRunnerBanner(true, "Dispatching Cloud Scraper to GitHub Actions...");
+          
+          const dispatchRes = await fetch("https://api.github.com/repos/mwjouini/budget-brian/actions/workflows/watcher.yml/dispatches", {
+            method: "POST",
+            headers: {
+              "Accept": "application/vnd.github+json",
+              "Authorization": "Bearer " + pat,
+              "X-GitHub-Api-Version": "2022-11-28"
+            },
+            body: JSON.stringify({ ref: "main" })
+          });
+
+          if (dispatchRes.status === 204 || dispatchRes.ok) {
+            showToast("🚀 Cloud Scraper triggered! Monitoring live execution...");
+            startRunPolling(pat);
+          } else {
+            const err = await dispatchRes.text();
+            console.warn("GitHub dispatch error:", err);
+            showToast("⚠️ Could not trigger remote run. Check GitHub Token.");
+            showCloudRunnerBanner(false);
+            await loadDashboardData();
+          }
+        } catch (e) {
+          console.error("Error triggering dispatch:", e);
+          showToast("⚡ Synchronizing latest cloud scan data...");
+          showCloudRunnerBanner(false);
+          await loadDashboardData();
+        }
+      } else {
+        // Instant Live Data Sync without leaving the page!
+        await loadDashboardData();
+        showToast("⚡ Research data refreshed live! (Add GitHub token in Settings for 1-click cloud trigger)");
+      }
+
+      setTimeout(() => {
+        refreshIcon.classList.remove("btn-refresh-pulse");
+        refreshText.textContent = "Refresh Research";
+      }, 800);
+    }
+
+    // Monitor Live GitHub Actions Execution In-Page
+    function showCloudRunnerBanner(show, text) {
+      const banner = document.getElementById("cloud-runner-banner");
+      const bannerText = document.getElementById("runner-banner-text");
+      if (!banner) return;
+      if (show) {
+        banner.style.display = "flex";
+        if (text && bannerText) bannerText.textContent = text;
+      } else {
+        banner.style.display = "none";
       }
     }
 
-    // Data Fetching
-    async function loadDashboardData() {
-      try {
-        const cacheBuster = "?t=" + Date.now();
-        const [statsRes, jobsRes, runsRes] = await Promise.all([
-          fetch("data/stats.json" + cacheBuster).then(r => r.ok ? r.json() : null).catch(() => null),
-          fetch("data/jobs.json" + cacheBuster).then(r => r.ok ? r.json() : []).catch(() => []),
-          fetch("data/runs.json" + cacheBuster).then(r => r.ok ? r.json() : []).catch(() => []),
-        ]);
+    function startRunPolling(pat) {
+      let seconds = 0;
+      const timerEl = document.getElementById("runner-banner-timer");
+      const bannerText = document.getElementById("runner-banner-text");
 
-        allJobs = jobsRes || [];
-        allRuns = runsRes || [];
+      if (pollingInterval) clearInterval(pollingInterval);
 
-        // Render Stats
-        if (statsRes) {
-          document.getElementById("kpi-total-jobs").textContent = statsRes.total_active_jobs || 0;
-          document.getElementById("kpi-strong-matches").textContent = statsRes.strong_matches || 0;
-          document.getElementById("kpi-sources-count").textContent = (statsRes.sources_monitored || 9) + "/9";
-          document.getElementById("briefing-sources-count").textContent = (statsRes.sources_monitored || 9) + " Sources Active";
-          document.getElementById("kpi-scan-duration").textContent = (statsRes.last_run_duration || 3.58) + "s";
-          
-          if (statsRes.last_scan_utc) {
-            const scanDate = new Date(statsRes.last_scan_utc);
-            document.getElementById("val-last-scan").textContent = "Last scan: " + scanDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + " UTC";
+      pollingInterval = setInterval(async () => {
+        seconds += 3;
+        if (timerEl) timerEl.textContent = seconds + "s elapsed";
+
+        try {
+          const res = await fetch("https://api.github.com/repos/mwjouini/budget-brian/actions/runs?per_page=1", {
+            headers: { "Authorization": "Bearer " + pat }
+          });
+          const data = await res.json();
+          if (data && data.workflow_runs && data.workflow_runs.length > 0) {
+            const latestRun = data.workflow_runs[0];
+            if (bannerText) bannerText.textContent = `Cloud Worker: #${latestRun.run_number} (${latestRun.status} / ${latestRun.conclusion || 'running'})`;
+
+            if (latestRun.status === "completed") {
+              clearInterval(pollingInterval);
+              showCloudRunnerBanner(false);
+              showToast(`✅ Cloud Scan #${latestRun.run_number} finished (${latestRun.conclusion})! Refreshing data...`);
+              await loadDashboardData();
+            }
           }
+        } catch (e) {
+          console.error("Polling error:", e);
         }
 
-        document.getElementById("tab-jobs-count").textContent = allJobs.length;
-        document.getElementById("tab-runs-count").textContent = allRuns.length;
+        // Safety timeout at 120s
+        if (seconds > 120) {
+          clearInterval(pollingInterval);
+          showCloudRunnerBanner(false);
+          await loadDashboardData();
+        }
+      }, 3000);
+    }
 
-        renderJobs(allJobs);
-        renderRuns(allRuns);
+    // Load Live Dashboard Data
+    async function loadDashboardData() {
+      const cacheBust = "?t=" + Date.now();
+
+      try {
+        const [statsRes, jobsRes, runsRes] = await Promise.all([
+          fetch("data/stats.json" + cacheBust).catch(() => null),
+          fetch("data/jobs.json" + cacheBust).catch(() => null),
+          fetch("data/runs.json" + cacheBust).catch(() => null)
+        ]);
+
+        let stats = null;
+        let jobs = [];
+        let runs = [];
+
+        if (statsRes && statsRes.ok) stats = await statsRes.json();
+        if (jobsRes && jobsRes.ok) jobs = await jobsRes.json();
+        if (runsRes && runsRes.ok) runs = await runsRes.json();
+
+        allJobs = jobs || [];
+        allRuns = runs || [];
+
+        updateKPIs(stats, jobs, runs);
+        renderJobs(jobs);
+        renderRuns(runs);
       } catch (err) {
-        console.error("Failed to load dashboard data:", err);
+        console.error("Error loading dashboard data:", err);
       }
     }
 
-    // Render Jobs Table
+    // Update KPI Counters
+    function updateKPIs(stats, jobs, runs) {
+      const totalJobs = jobs ? jobs.length : 0;
+      const strongMatches = jobs ? jobs.filter(j => (j.relevance_score || 0) >= 85).length : 0;
+
+      document.getElementById("kpi-total-jobs").textContent = totalJobs;
+      document.getElementById("tab-jobs-count").textContent = totalJobs;
+      document.getElementById("kpi-strong-matches").textContent = strongMatches;
+
+      if (runs && runs.length > 0) {
+        const latestRun = runs[0];
+        document.getElementById("kpi-scan-duration").textContent = latestRun.duration_seconds + "s";
+        document.getElementById("tab-runs-count").textContent = runs.length;
+        
+        const lastScanDate = new Date(latestRun.started_at);
+        document.getElementById("val-last-scan").textContent = "Last scan: " + lastScanDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + " UTC";
+        
+        if (latestRun.sources_scanned) {
+          const totalSources = Object.keys(latestRun.sources_scanned).length;
+          document.getElementById("kpi-sources-count").textContent = totalSources + "/9";
+        }
+      }
+    }
+
+    // Render Vacancies
     function renderJobs(jobs) {
-      const tbody = document.getElementById("jobs-tbody");
+      const table = document.getElementById("jobs-table");
       const emptyState = document.getElementById("jobs-empty");
-      tbody.innerHTML = "";
+      const tbody = document.getElementById("jobs-tbody");
 
       if (!jobs || jobs.length === 0) {
-        emptyState.style.display = "block";
+        table.style.display = "none";
+        emptyState.style.display = "flex";
         return;
       }
+
+      table.style.display = "table";
       emptyState.style.display = "none";
+      tbody.innerHTML = "";
 
-      jobs.forEach(j => {
+      jobs.forEach(job => {
         const tr = document.createElement("tr");
-
-        let badgeClass = "badge-generic";
-        if (j.source === "reed") badgeClass = "badge-reed";
-        else if (j.source === "vivid_website") badgeClass = "badge-vivid";
-        else if (j.source === "linkedin") badgeClass = "badge-linkedin";
-        else if (j.source === "nijobs") badgeClass = "badge-nijobs";
-
         tr.innerHTML = `
-          <td data-label="Role Title">
-            <div style="font-weight: 700; color: #fff;">${escapeHtml(j.title)}</div>
-            <div style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">${escapeHtml(j.job_type || 'Full-time')}</div>
+          <td data-label="Role">
+            <div class="role-title">${escapeHtml(job.title)}</div>
+            <div class="role-meta">${escapeHtml(job.role_category || 'Healthcare / Management')}</div>
           </td>
-          <td data-label="Company">
-            <span style="font-weight: 600; color: var(--accent-gold-light);">${escapeHtml(j.company)}</span>
-          </td>
-          <td data-label="Location">
-            <span>📍 ${escapeHtml(j.location || 'Belfast, NI')}</span>
-          </td>
-          <td data-label="Salary">
-            <span style="font-family: var(--font-mono); font-weight: 600;">${escapeHtml(j.salary || 'Competitive')}</span>
-          </td>
-          <td data-label="Source">
-            <span class="source-badge ${badgeClass}">${escapeHtml(j.source)}</span>
-          </td>
+          <td data-label="Company"><span class="pill pill-gold">${escapeHtml(job.company)}</span></td>
+          <td data-label="Location">${escapeHtml(job.location)}</td>
+          <td data-label="Salary" style="font-family: var(--font-mono); font-weight: 700;">${escapeHtml(job.salary_raw || 'Competitive')}</td>
+          <td data-label="Source"><span class="pill pill-cyan">${escapeHtml(job.source)}</span></td>
           <td data-label="Relevance">
-            <span style="font-family: var(--font-mono); font-weight: 700; color: var(--accent-gold);">${Math.round(j.relevance_score || 100)}%</span>
+            <span class="pill pill-green">${job.relevance_score || 85}%</span>
           </td>
           <td data-label="Action">
-            <a href="${escapeHtml(j.source_url)}" target="_blank" rel="noopener noreferrer" class="btn btn-gold" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;">
-              <span>View Job</span>
-              <span>↗</span>
+            <a href="${escapeHtml(job.url)}" target="_blank" rel="noopener noreferrer" class="btn btn-gold" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;">
+              Apply Direct ↗
             </a>
           </td>
         `;
@@ -1683,7 +1977,7 @@
       });
     }
 
-    // Render Runs Table
+    // Render Runs Audit Table
     function renderRuns(runs) {
       const tbody = document.getElementById("runs-tbody");
       tbody.innerHTML = "";
@@ -1696,29 +1990,28 @@
       runs.forEach(r => {
         const tr = document.createElement("tr");
         const startDate = new Date(r.started_at);
-        const timeFormatted = startDate.toLocaleDateString() + " " + startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const timeFormatted = startDate.toLocaleDateString() + " " + startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + " UTC";
 
         let statusClass = "status-success";
         if (r.status === "partial") statusClass = "status-partial";
-        else if (r.status === "error") statusClass = "status-error";
 
-        let activeSourcesCount = 0;
-        let totalSourcesCount = 0;
+        let activeCount = 0;
+        let totalCount = 0;
         if (r.sources_scanned) {
-          totalSourcesCount = Object.keys(r.sources_scanned).length;
-          activeSourcesCount = Object.values(r.sources_scanned).filter(s => s.status === "active").length;
+          totalCount = Object.keys(r.sources_scanned).length;
+          activeCount = Object.values(r.sources_scanned).filter(s => s.status === "active").length;
         }
 
         tr.innerHTML = `
-          <td data-label="Run ID"><code style="color: var(--accent-cyan);">#${r.id}</code></td>
-          <td data-label="Started">${timeFormatted}</td>
+          <td data-label="Run ID"><code style="color: var(--accent-cyan); font-weight:700;">#${r.id}</code></td>
+          <td data-label="Time" style="font-family: var(--font-mono); font-size: 0.78rem;">${timeFormatted}</td>
           <td data-label="Duration" style="font-family: var(--font-mono); font-weight: 600;">${r.duration_seconds}s</td>
           <td data-label="Status"><span class="status-badge ${statusClass}">${r.status}</span></td>
           <td data-label="Found" style="font-family: var(--font-mono); font-weight: 700;">${r.listings_found || 0}</td>
           <td data-label="New" style="font-family: var(--font-mono); color: var(--accent-gold); font-weight: 700;">${r.new_listings || 0}</td>
           <td data-label="Endpoints">
-            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary);">
-              ${activeSourcesCount}/${totalSourcesCount} Endpoints Ok
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-emerald);">
+              ● ${activeCount}/${totalCount} Active
             </span>
           </td>
         `;

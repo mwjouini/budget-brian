@@ -1,41 +1,40 @@
-# Vivid Healthcare Job Watcher (24/7 Cloud Automated Portal)
+# Vivid Healthcare Job Watcher • Budget Brian Intelligence Suite
 
-An automated, serverless intelligence portal running 24/7 on GitHub Actions and GitHub Pages. It continuously monitors public job boards for **Registered Manager** positions related to **Vivid Healthcare Limited / Vivid Healthcare Search Limited**, primarily across **Northern Ireland / Belfast (with RQIA compliance awareness)**.
+An automated, serverless intelligence portal running 24/7 on GitHub Actions and GitHub Pages. It continuously monitors public recruitment boards for **Registered Manager** positions related to **Vivid Healthcare Limited / Vivid Healthcare Search Limited**, primarily across **Northern Ireland / Belfast (RQIA compliance framework)**.
 
 🌐 **Live Dashboard**: [https://mwjouini.github.io/budget-brian/](https://mwjouini.github.io/budget-brian/)  
-🔐 **Default Access Passcode**: `vivid2026` *(changeable anytime in dashboard settings)*
+🔐 **Security**: Cryptographically gated with client-side SHA-256 session authorization. Passcode is customizable inside dashboard settings.
 
 ---
 
-## ⚡ How It Works (100% Serverless Cloud Operation)
+## ⚡ Architecture & Cloud Operation (100% Serverless)
 
-1. **Hourly GitHub Actions Cloud Worker**:
-   - Runs automatically **every 1 hour** via `.github/workflows/watcher.yml` (`cron: '0 * * * *'`).
-   - Requires **no local server**, **no laptop running**, and **zero maintenance**.
-   - Can also be triggered manually anytime via the **Actions Tab** (`workflow_dispatch`).
+1. **Hourly Cloud Worker (GitHub Actions)**:
+   - Executes automatically **every 1 hour** via `.github/workflows/watcher.yml` (`cron: '0 * * * *'`).
+   - Completely serverless: no local hardware, zero background laptop load.
+   - Can also be triggered in-page from the web dashboard.
 
-2. **10 Monitored Public Recruitment Sources**:
+2. **9 Public Recruitment Sources Monitored**:
    - 🏢 **Reed.co.uk**: Vivid Healthcare Search Limited Recruiter Profile (`p45258`).
-   - 🌐 **Vivid Healthcare Official Website**: Contact, careers, and services portals (`vivid-healthcare.co.uk`).
+   - 🌐 **Vivid Healthcare Official Website**: Careers and service vacancy announcements (`vivid-healthcare.co.uk`).
    - 💼 **LinkedIn Jobs**: Public Guest Search API for Vivid Healthcare mandates in Northern Ireland.
-   - 🔍 **Indeed UK**: Search query API targeting Vivid Healthcare in Northern Ireland.
-   - 🍀 **NIJobs.com**: Northern Ireland's regional recruitment portal.
+   - 🔍 **Indeed UK**: Direct query endpoint targeting Vivid Healthcare in Northern Ireland.
+   - 🍀 **NIJobs.com**: Northern Ireland regional recruitment portal.
    - 📋 **Totaljobs.com**: Belfast & Northern Ireland registered manager search.
    - 📑 **CV-Library**: Active agency mandates in Belfast.
    - 🏢 **Glassdoor UK**: Regional listings.
-   - 🏥 **NHS Jobs**: Jobs.nhs.uk Belfast trusts & intermediate care oversight.
-   - 🌐 **Search Engine Index**: Automated query scanning for newly indexed vacancy links.
+   - 🏥 **NHS Jobs**: Belfast HSC trusts & intermediate care oversight (`jobs.nhs.uk`).
 
-3. **Strict Zero-Noise Relevance Scoring (0–100)**:
-   - Configured via `config/keywords.yml`.
-   - **Strong Match (≥ 85)**: Core role (*Registered Manager*) + organisation (*Vivid Healthcare*) or regulator (*RQIA*) in Northern Ireland / Belfast.
-   - **Negative Keyword Disqualification**: Automatically disqualifies unrelated occupations (*Cook*, *Chef*, *Retail*, *Veterinary*, etc.).
-   - Discards any third-party company (*Lovisa, Iceland, Autism Initiatives, etc.*) to guarantee **zero false positives**.
-   - Only 100% working, verified URLs are recorded.
+3. **Strict Zero-Noise Match Protocol (0–100 Scoring)**:
+   - Rules specified in `config/keywords.yml`.
+   - **High Match (≥ 85)**: Core role (*Registered Manager*) + organisation (*Vivid Healthcare*) or regulator (*RQIA*) in Northern Ireland / Belfast.
+   - **Negative Keyword Filter**: Automatically rejects unrelated roles (*Cook*, *Chef*, *Retail*, *Veterinary*, etc.).
+   - Discards non-target companies to prevent false positives.
+   - Every candidate URL is verified via live HTTP probe before storage.
 
 4. **Executive Web Dashboard**:
-   - Password-protected with client-side SHA-256 session management.
+   - Gated with SHA-256 client authentication.
    - Real-time search, filters by source and relevance score.
    - Direct, verified links to original job postings (`target="_blank"`).
-   - Hourly scan runs inspection log with per-source health status.
-   - One-click export to **CSV** and **JSON**.
+   - In-page live data refresh & remote cloud dispatch with zero page redirect.
+   - Hourly audit log with per-source health status.
