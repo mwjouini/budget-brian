@@ -1510,20 +1510,30 @@
 
       <!-- Passcode Customization -->
       <div style="margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-subtle);">
-        <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.4rem;">🔑 Update Authorization Passcode</h4>
-        <p class="modal-desc">
-          Customize your access key. Passcode is securely hashed with SHA-256 in your browser.
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.4rem;">
+          <h4 style="font-size: 0.9rem; font-weight: 700;">🔑 Authorization Passcode</h4>
+          <span id="passcode-status-pill" style="font-size: 0.68rem; font-family: var(--font-mono); padding: 0.15rem 0.5rem; border-radius: var(--radius-full); background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border: 1px solid rgba(16, 185, 129, 0.3);">
+            Checking...
+          </span>
+        </div>
+        <p class="modal-desc" style="margin-bottom: 0.85rem;">
+          When a custom passcode is set, the initial default passcode is completely disabled.
         </p>
         <div class="password-field-wrap">
-          <label class="form-label" for="new-passcode">New Passcode</label>
+          <label class="form-label" for="new-passcode">New Custom Passcode</label>
           <div class="form-input-wrap">
             <input type="password" id="new-passcode" class="form-input" placeholder="Enter new passcode (min 4 chars)...">
             <button type="button" class="toggle-pwd-btn" onclick="togglePasswordVisibility('new-passcode')">👁️</button>
           </div>
         </div>
-        <button class="btn btn-gold" onclick="saveNewPassword()" style="width: 100%; justify-content: center;">
-          Save New Passcode
-        </button>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-gold" onclick="saveNewPassword()" style="flex: 1; justify-content: center;">
+            Save New Passcode
+          </button>
+          <button class="btn btn-secondary" id="btn-reset-passcode" onclick="resetDefaultPassword()" style="display: none; justify-content: center;">
+            Reset Default
+          </button>
+        </div>
       </div>
 
       <!-- Remote Cloud Trigger Token (Optional for 1-click in-page runner) -->
@@ -1589,14 +1599,34 @@
       return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
     }
 
-    // Passcode Verification
+    // Get currently active custom hash (with legacy plain-text fallback)
+    async function getActiveCustomHash() {
+      let customHash = localStorage.getItem("vivid_custom_hash");
+      if (!customHash) {
+        const legacyPlain = localStorage.getItem("vivid_custom_passcode");
+        if (legacyPlain) {
+          customHash = await computeSha256(legacyPlain);
+          localStorage.setItem("vivid_custom_hash", customHash);
+          localStorage.removeItem("vivid_custom_passcode");
+        }
+      }
+      return customHash;
+    }
+
+    // Passcode Verification: Custom passcode STRICTLY overrides default
     async function verifyPasscode(entered) {
       if (!entered) return false;
       const enteredHash = await computeSha256(entered);
-      const customHash = localStorage.getItem("vivid_custom_hash");
-      if (customHash && enteredHash === customHash) return true;
-      if (enteredHash === DEFAULT_PASSCODE_HASH) return true;
-      return false;
+      const customHash = await getActiveCustomHash();
+
+      // If a custom passcode is set, ONLY that custom passcode is valid!
+      // The old default passcode is completely disabled.
+      if (customHash) {
+        return enteredHash === customHash;
+      }
+
+      // If no custom passcode has ever been set, verify against default hash
+      return enteredHash === DEFAULT_PASSCODE_HASH;
     }
 
     // Toggle Password Visibility
@@ -1673,13 +1703,39 @@
       document.getElementById("dashboard-app").style.display = "none";
     }
 
+    // Update Settings UI Indicators
+    async function updateSettingsUI() {
+      const customHash = await getActiveCustomHash();
+      const pill = document.getElementById("passcode-status-pill");
+      const resetBtn = document.getElementById("btn-reset-passcode");
+
+      if (customHash) {
+        if (pill) {
+          pill.textContent = "● Custom Passcode Active (Default Disabled)";
+          pill.style.background = "rgba(16, 185, 129, 0.15)";
+          pill.style.color = "var(--accent-emerald)";
+          pill.style.borderColor = "rgba(16, 185, 129, 0.35)";
+        }
+        if (resetBtn) resetBtn.style.display = "inline-flex";
+      } else {
+        if (pill) {
+          pill.textContent = "○ Initial Default Passcode Active";
+          pill.style.background = "rgba(255, 255, 255, 0.08)";
+          pill.style.color = "var(--text-secondary)";
+          pill.style.borderColor = "var(--border-subtle)";
+        }
+        if (resetBtn) resetBtn.style.display = "none";
+      }
+    }
+
     // Settings Modal
-    function openSettingsModal() {
+    async function openSettingsModal() {
       const modal = document.getElementById("settings-modal");
       modal.classList.remove("hidden");
       const pat = localStorage.getItem("github_pat") || "";
       const patInput = document.getElementById("github-pat");
       if (patInput) patInput.value = pat;
+      await updateSettingsUI();
     }
 
     function closeSettingsModal() {
@@ -1694,10 +1750,21 @@
       }
       const hash = await computeSha256(newPass);
       localStorage.setItem("vivid_custom_hash", hash);
+      localStorage.removeItem("vivid_custom_passcode"); // remove legacy plain text
       localStorage.setItem("vivid_auth_session", "authenticated");
-      showToast("🔑 Authorization passcode updated successfully!");
+      showToast("🔑 Custom passcode saved! The old default passcode is now DISABLED.");
       document.getElementById("new-passcode").value = "";
+      await updateSettingsUI();
       closeSettingsModal();
+    }
+
+    async function resetDefaultPassword() {
+      if (confirm("Reset authorization passcode to initial default? The old default passcode will become active again.")) {
+        localStorage.removeItem("vivid_custom_hash");
+        localStorage.removeItem("vivid_custom_passcode");
+        showToast("Initial default passcode restored.");
+        await updateSettingsUI();
+      }
     }
 
     function saveGitHubPat() {
