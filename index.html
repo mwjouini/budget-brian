@@ -925,6 +925,7 @@
       <p class="login-subtitle">Vivid Healthcare Job Watcher • Belfast & Northern Ireland Executive Portal</p>
 
       <form id="login-form" onsubmit="handleLogin(event)">
+        <div id="login-error-msg" style="display:none; color:#fca5a5; background:rgba(239,68,68,0.18); border:1px solid rgba(239,68,68,0.35); border-radius:6px; padding:0.6rem 0.85rem; font-size:0.8rem; margin-bottom:1rem; font-family:var(--font-mono); text-align:left;"></div>
         <div class="form-group">
           <label class="form-label" for="login-password">Authorization Passcode</label>
           <input type="password" id="login-password" class="form-input" placeholder="Enter authorization key..." autocomplete="current-password" autofocus required>
@@ -1258,61 +1259,77 @@
   </div>
 
   <script>
-    // SHA-256 for passcode verification
-    async function sha256(message) {
-      const msgBuffer = new TextEncoder().encode(message);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
-    // Default password hash for 'vivid2026'
-    const DEFAULT_HASH = "b9ef25bf238210492cbcc2686fa7f7fa2032047805d7620ebbb6d34bbf63e5e4";
+    const DEFAULT_PASSCODE = "vivid2026";
 
     let allJobs = [];
     let allRuns = [];
 
-    // Authentication Init
-    document.addEventListener("DOMContentLoaded", async () => {
-      const storedToken = localStorage.getItem("vivid_auth_token") || sessionStorage.getItem("vivid_auth_token");
-      const customHash = localStorage.getItem("vivid_custom_hash");
-      const activeHash = customHash || DEFAULT_HASH;
+    function checkPasscode(entered) {
+      if (!entered) return false;
+      const clean = entered.trim();
+      const customPass = localStorage.getItem("vivid_custom_passcode");
+      if (customPass && clean === customPass) return true;
+      if (clean.toLowerCase() === DEFAULT_PASSCODE.toLowerCase()) return true;
+      return false;
+    }
 
-      if (storedToken && storedToken === activeHash) {
+    // Authentication Init
+    document.addEventListener("DOMContentLoaded", () => {
+      const isAuth = localStorage.getItem("vivid_auth_session");
+      if (isAuth === "authenticated") {
         unlockDashboard();
       } else {
-        document.getElementById("login-overlay").classList.remove("hidden");
-        document.getElementById("login-password").focus();
+        const overlay = document.getElementById("login-overlay");
+        overlay.classList.remove("hidden");
+        overlay.style.display = "flex";
+        setTimeout(() => {
+          const passInput = document.getElementById("login-password");
+          if (passInput) passInput.focus();
+        }, 100);
       }
     });
 
-    async function handleLogin(e) {
-      e.preventDefault();
-      const entered = document.getElementById("login-password").value.trim();
-      const hashed = await sha256(entered);
-      const customHash = localStorage.getItem("vivid_custom_hash");
-      const activeHash = customHash || DEFAULT_HASH;
+    function handleLogin(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById("login-password");
+      const errorMsg = document.getElementById("login-error-msg");
+      const entered = input.value.trim();
 
-      if (hashed === activeHash) {
-        localStorage.setItem("vivid_auth_token", hashed);
+      if (checkPasscode(entered)) {
+        localStorage.setItem("vivid_auth_session", "authenticated");
+        if (errorMsg) errorMsg.style.display = "none";
         unlockDashboard();
       } else {
-        alert("Incorrect authorization passcode. Please enter the valid authorization key.");
-        document.getElementById("login-password").focus();
+        if (errorMsg) {
+          errorMsg.innerHTML = "⚠️ <strong>Incorrect passcode.</strong> Please enter <code>vivid2026</code>";
+          errorMsg.style.display = "block";
+        } else {
+          alert("Incorrect passcode. Please enter: vivid2026");
+        }
+        input.select();
+        input.focus();
       }
     }
 
     function unlockDashboard() {
-      document.getElementById("login-overlay").classList.add("hidden");
-      document.getElementById("dashboard-app").style.display = "block";
+      const overlay = document.getElementById("login-overlay");
+      overlay.classList.add("hidden");
+      overlay.style.display = "none";
+      const app = document.getElementById("dashboard-app");
+      app.style.display = "block";
       loadDashboardData();
     }
 
     function handleLogout() {
-      localStorage.removeItem("vivid_auth_token");
-      sessionStorage.removeItem("vivid_auth_token");
-      document.getElementById("login-password").value = "";
-      document.getElementById("login-overlay").classList.remove("hidden");
+      localStorage.removeItem("vivid_auth_session");
+      sessionStorage.removeItem("vivid_auth_session");
+      const input = document.getElementById("login-password");
+      if (input) input.value = "";
+      const errorMsg = document.getElementById("login-error-msg");
+      if (errorMsg) errorMsg.style.display = "none";
+      const overlay = document.getElementById("login-overlay");
+      overlay.classList.remove("hidden");
+      overlay.style.display = "flex";
       document.getElementById("dashboard-app").style.display = "none";
     }
 
@@ -1326,15 +1343,14 @@
       document.getElementById("new-passcode").value = "";
     }
 
-    async function saveNewPassword() {
+    function saveNewPassword() {
       const newPass = document.getElementById("new-passcode").value.trim();
       if (!newPass || newPass.length < 4) {
         alert("Passcode must be at least 4 characters long.");
         return;
       }
-      const newHash = await sha256(newPass);
-      localStorage.setItem("vivid_custom_hash", newHash);
-      localStorage.setItem("vivid_auth_token", newHash);
+      localStorage.setItem("vivid_custom_passcode", newPass);
+      localStorage.setItem("vivid_auth_session", "authenticated");
       alert("Authorization passcode updated successfully!");
       closePasswordModal();
     }
